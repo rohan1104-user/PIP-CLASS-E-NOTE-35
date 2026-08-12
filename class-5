@@ -1,0 +1,135 @@
+  WED · 05-AUG-26 · 2:00–3:00 PM · ROOM D-225 
+
+Module-1 : Raw Materials Of Code
+
+
+Introduction
+Module I marks the beginning of handwritten Python programming. From now on, you will write Python code instead of using programming blocks.
+
+In Production Engineering, selecting the correct raw material is the first step in manufacturing a quality product. Similarly, in Python, choosing the correct data type is essential for writing accurate and efficient programs. Using the wrong data type can produce incorrect results, just as using the wrong material can lead to defective components.
+
+
+Learning Objectives
+By the end of this session, you should be able to:
+
+Understand the basic Python data types.
+
+Identify different types of literals.
+
+Use the type() function to determine a value's data type.
+
+Follow Python's variable naming rules.
+
+Recognize valid and invalid variable names.
+
+
+Today's Topics
+1. Python Data Types
+Python provides several built-in data types for storing different kinds of information.
+
+int (Integer): Stores whole numbers (e.g., 10, -5, 0)
+
+float: Stores decimal numbers (e.g., 3.14, 25.0)
+
+str (String): Stores text enclosed in single or double quotes (e.g., "VSSUT", 'Python')
+
+bool (Boolean): Stores logical values (True or False)
+
+
+2. The type() Function
+The type() function is used to determine the data type of a value or variable.
+
+Example:
+
+print(type(25))
+
+print(type(25.0))
+
+print(type("25"))
+
+print(type(True))
+
+
+Output
+
+<class 'int'>
+
+<class 'float'>
+
+<class 'str'>
+
+<class 'bool'>
+
+
+
+3. Variable Naming Rules
+A variable name must follow these rules:
+
+It may contain letters, digits, and underscores (_).
+
+It cannot begin with a digit.
+
+It cannot be a Python keyword.
+
+Spaces and special characters are not allowed.
+
+Use meaningful lowercase names with underscores for readability.
+
+
+Valid Variable Names
+
+part_count
+
+machine_speed
+
+student_name
+
+cycle_time
+
+
+Invalid Variable Names
+
+2nd_shift
+
+for
+
+if
+
+student name
+
+machine-speed
+
+
+
+Class Activities
+Pair Activity
+Identify the data type of different literals.
+
+Predict the answer first.
+
+Verify your prediction using the type() function in EduBlocks or Google Colab.
+
+
+Teach-Back Activity
+Create three literals of your own.
+
+Exchange them with a partner.
+
+Identify each other's data types and verify the answers.
+
+
+Assessment
+Classroom Activity
+
+Attendance
+
+
+Key Takeaways
+Python has four basic data types: int, float, str, and bool.
+
+Use the type() function to identify any data type.
+
+Always follow proper variable naming rules.
+
+Choosing the correct data type is as important as selecting the correct raw material in Production Engineering.
+
