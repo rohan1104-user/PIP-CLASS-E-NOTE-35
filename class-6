@@ -1,0 +1,90 @@
+ THU · 06-AUG-26 · 9:00–10:00 AM · ROOM D-225
+
+📝 CS-1202 Programming in Python – Module I Notes
+Go / No-Go Gauging in Code
+
+📖 Introduction
+In manufacturing, every produced part is inspected to ensure it meets the required dimensions. A Go/No-Go Gauge checks whether a part is within the specified tolerance. In Python, this inspection process is implemented using decision-making statements (if, elif, else) and loops (for, while).
+
+
+🎯 Learning Objectives
+After completing this module, you should be able to:
+
+Write if–elif–else statements correctly.
+
+Use for and while loops.
+
+Apply break and continue in loops.
+
+Develop a three-bin inspection program.
+
+Identify common Python syntax errors.
+
+
+🏭 Go / No-Go Gauging
+Specification
+Standard Diameter = 25.00 mm
+
+Tolerance = ±0.05 mm
+
+Inspection Range:
+Diameter
+
+Result
+
+Greater than 25.05 mm
+
+REWORK
+
+Between 24.95 mm and 25.05 mm
+
+ACCEPT
+
+Less than 24.95 mm
+
+SCRAP
+
+
+💻 Python Program
+# Specification: 25.00 ± 0.05 mm
+
+
+dia = float(input("Measured diameter: "))
+
+
+if dia > 25.05:
+
+    print("REWORK")
+
+
+elif dia < 24.95:
+
+    print("SCRAP")
+
+
+else:
+
+    print("ACCEPT")
+
+
+
+📌 Explanation
+REWORK
+Diameter is greater than 25.05 mm.
+
+The part is oversized.
+
+Extra material can be removed by machining.
+
+SCRAP
+Diameter is less than 24.95 mm.
+
+The part is undersized.
+
+Material cannot be added back.
+
+ACCEPT
+Diameter lies between 24.95 mm and 25.05 mm.
+
+The part satisfies the required specification.
+
