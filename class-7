@@ -1,0 +1,167 @@
+  THU · 06-AUG-26 · 10:00–11:00 AM · ROOM D-225 
+
+📌 Why Use elif?
+Python checks conditions from top to bottom.
+
+Only one block executes.
+
+A part can belong to only one category.
+
+Using multiple if statements may cause unnecessary checking.
+
+
+🔄 Python Loops
+1. for Loop
+Used when the number of repetitions is known.
+
+for i in range(10):
+
+    print("Inspect Part", i+1)
+
+
+Example: Inspecting 10 parts in a production batch.
+
+
+2. while Loop
+Used when the number of repetitions is unknown.
+
+diameter = 0
+
+
+while diameter < 24.95:
+
+    diameter = float(input("Enter diameter: "))
+
+
+Example: Continue measuring until the part is acceptable.
+
+
+⛔ break Statement
+Stops the loop immediately.
+
+for i in range(10):
+
+
+    dia = float(input("Diameter: "))
+
+
+    if dia < 24.95:
+
+        print("SCRAP FOUND")
+
+        break
+
+
+Use: Stop inspection when a defective part is detected.
+
+
+⏭ continue Statement
+Skips the current iteration.
+
+for i in range(10):
+
+
+    dia = float(input("Diameter: "))
+
+
+    if dia == 0:
+
+        continue
+
+
+    print(dia)
+
+
+Use: Ignore an invalid reading and continue inspection.
+
+
+🏭 Batch Inspection Program
+accept = 0
+
+rework = 0
+
+scrap = 0
+
+
+for i in range(10):
+
+
+    dia = float(input("Enter Diameter: "))
+
+
+    if dia > 25.05:
+
+        rework += 1
+
+
+    elif dia < 24.95:
+
+        scrap += 1
+
+
+    else:
+
+        accept += 1
+
+
+print("Accepted :", accept)
+
+print("Rework   :", rework)
+
+print("Scrap    :", scrap)
+
+
+
+⚠ Common Python Errors
+1. Missing Colon
+❌ Incorrect
+
+if dia > 25.05
+
+
+✅ Correct
+
+if dia > 25.05:
+
+
+
+2. Using = Instead of ==
+❌ Incorrect
+
+if dia = 25
+
+
+✅ Correct
+
+if dia == 25
+
+
+
+3. Wrong Indentation
+❌ Incorrect
+
+if dia > 25:
+
+print("REWORK")
+
+
+✅ Correct
+
+if dia > 25:
+
+    print("REWORK")
+
+
+
+4. Infinite while Loop
+❌ Incorrect
+
+x = 1
+
+
+while x < 5:
+
+    print(x)
+
+
+Reason: x is never updated.
