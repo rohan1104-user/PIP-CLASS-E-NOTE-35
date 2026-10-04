@@ -1,1 +1,274 @@
 
+Topic: Dictionaries — Part-Number Lookups
+1. What is a Dictionary?
+A dictionary in Python is a container that stores data in key → value pairs.
+
+Think of it like a catalogue:
+
+stock = {
+
+    "PE-26-0137": 42,
+
+    "PE-26-0201": 7,
+
+    "PE-26-0345": 130
+
+}
+
+
+Here:
+
+"PE-26-0137" → key
+
+42 → value
+
+Unlike a list, a dictionary looks up data using a key, not a position/index.
+
+
+2. Accessing Values
+We can directly access a value using its key:
+
+stock["PE-26-0201"]
+
+
+Output:
+
+7
+
+
+This is faster and more direct than searching through a list.
+
+
+3. Updating a Dictionary
+To change an existing value:
+
+stock["PE-26-0201"] = 6
+
+
+The quantity changes from 7 to 6.
+
+To add a completely new entry:
+
+stock["PE-26-0999"] = 15
+
+
+Python automatically adds the new key-value pair.
+
+
+4. Deleting an Entry
+Use del:
+
+del stock["PE-26-0137"]
+
+
+This removes the key and its value from the dictionary.
+
+
+5. KeyError
+If we try to access a key that doesn't exist:
+
+stock["PE-99-XXXX"]
+
+
+Python gives:
+
+KeyError: 'PE-99-XXXX'
+
+
+This happens because the requested key is not present in the dictionary.
+
+Safe method 1: get()
+stock.get("PE-99-XXXX", 0)
+
+
+Output:
+
+0
+
+
+It means: "Give me the value, and if the key doesn't exist, use 0."
+
+Safe method 2: Check with in
+"PE-26-0345" in stock
+
+
+Output:
+
+True
+
+
+Example:
+
+if "PE-26-0345" in stock:
+
+    print(stock["PE-26-0345"])
+
+
+
+6. Useful Dictionary Operations
+Suppose:
+
+stock = {
+
+    "PE-26-0137": 42,
+
+    "PE-26-0201": 7,
+
+    "PE-26-0345": 130
+
+}
+
+
+Operation
+
+Code
+
+Get all keys
+
+stock.keys()
+
+Get all values
+
+stock.values()
+
+Get key-value pairs
+
+stock.items()
+
+Number of entries
+
+len(stock)
+
+Total quantity
+
+sum(stock.values())
+
+To loop through the dictionary:
+
+for part, qty in stock.items():
+
+    print(part, qty)
+
+
+
+7. Rules for Dictionary Keys
+Dictionary keys must be:
+
+Unique
+Two entries cannot have the same key.
+
+data = {
+
+    "A": 10,
+
+    "A": 20
+
+}
+
+
+The second "A" replaces the first value.
+
+Unchangeable (Immutable)
+Keys must be of an immutable type.
+
+Valid keys:
+
+"A"
+
+42
+
+(1, 2)
+
+
+Strings, numbers, and tuples can be keys.
+
+Lists cannot be keys:
+
+data = {
+
+    [1, 2]: "hello"
+
+}
+
+
+This produces an error because lists are mutable.
+
+
+8. The Tally Pattern
+One of the most useful applications of dictionaries is counting occurrences.
+
+Example:
+
+codes = ["D01", "D07", "D01", "D03", "D01"]
+
+
+We want to count how many times each defect code appears.
+
+Method 1: Using if-else
+count = {}
+
+
+for c in codes:
+
+    if c in count:
+
+        count[c] = count[c] + 1
+
+    else:
+
+        count[c] = 1
+
+
+print(count)
+
+
+Output:
+
+{'D01': 3, 'D07': 1, 'D03': 1}
+
+
+
+9. Shorter Method Using get()
+The same task can be written more simply:
+
+count = {}
+
+
+for c in codes:
+
+    count[c] = count.get(c, 0) + 1
+
+
+Result:
+
+{'D01': 3, 'D07': 1, 'D03': 1}
+
+
+Remember:
+count.get(c, 0)
+
+
+means:
+
+"Give me the current count for c; if c doesn't exist, give me 0."
+
+Then we add 1.
+
+count[c] = count.get(c, 0) + 1
+
+
+This is a very common dictionary pattern in Python.
+
+
+10. Finding the Worst Offender
+To find the defect code with the highest count:
+
+worst = max(count, key=count.get)
+
+
+Output:
+
+D01
+
+
+Because D01 occurred 3 times, while the others occurred only once.
