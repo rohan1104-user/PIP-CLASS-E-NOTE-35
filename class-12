@@ -1,1 +1,73 @@
 
+CS-1202 · Strings & Characters
+What We Learned From This Topic
+🎯 Learning Outcomes
+From Strings & Characters, we learned how Python stores, accesses, and works with text data.
+
+1. Understanding Strings
+A string is an ordered sequence of characters.
+
+Strings are written inside quotes.
+
+Example:
+
+code = "VSSUT-PE-26-0137"
+
+2. Indexing
+Every character has a position called an index.
+
+Python starts indexing from 0.
+
+Negative indexing allows us to access characters from the end.
+
+code[0]    # First character
+
+code[-1]   # Last character
+
+3. Slicing
+We learned to extract a specific portion of a string using slicing.
+
+Syntax:
+
+string[start:stop]
+
+Start is included, stop is excluded.
+
+Slice length = stop - start.
+
+4. Basic String Operations
+We learned to:
+
+Find length using len()
+
+Join strings using +
+
+Repeat strings using *
+
+Check whether something exists using in
+
+5. String Immutability ⭐
+Strings are immutable, meaning their individual characters cannot be changed directly.
+
+Trying to modify a character produces a TypeError.
+
+To make a change, we create a new string using slicing and concatenation.
+
+6. Practical Application
+We learned how strings can represent real-world information such as:
+
+Roll numbers
+
+Serial numbers
+
+Product codes
+
+Employee IDs
+
+Machine/component identification codes
+
+🏆 Final Learning
+This topic taught us how to accurately access, extract, combine, search, and manipulate text data in Python while understanding the important concept of string immutability.
+
+🔑 One-Line Revision
+String → Index → Slice → Length → Join → Repeat → Search → Immutable
