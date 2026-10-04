@@ -1,1 +1,261 @@
 
+Lambda & Recursion — Digital Notes
+This topic completes Module III and builds directly on functions.
+
+The two main concepts are:
+
+Lambda functions → small, one-time functions.
+
+Recursion → a function calling itself to solve a smaller version of the same problem.
+
+
+1. Lambda Function
+A lambda is a small, anonymous (unnamed) function written in a single line.
+
+Normal function
+def square(x):
+
+    return x * x
+
+
+Lambda equivalent
+lambda x: x * x
+
+
+The lambda has:
+
+lambda parameter: expression
+
+
+Example:
+
+lambda x: x + 10
+
+
+means:
+
+Take x and return x + 10.
+
+
+2. Why is it Called Anonymous?
+A normal function has a name:
+
+def over_limit(p):
+
+    return p[1] > 25.05
+
+
+The function's name is:
+
+over_limit
+
+
+A lambda usually has no name:
+
+lambda p: p[1] > 25.05
+
+
+It is created and used where it is needed.
+
+Think of it as a disposable shim: make it for one small job and don't store it.
+
+
+3. Lambda with sorted()
+One of the most common uses of lambda is sorting.
+
+Suppose we have:
+
+parts = [
+
+    ("PE-0137", 25.02),
+
+    ("PE-0201", 24.90),
+
+    ("PE-0345", 25.09)
+
+]
+
+
+Each item contains:
+
+(part number, diameter)
+
+
+To sort by diameter:
+
+sorted(parts, key=lambda p: p[1])
+
+
+Result:
+
+PE-0201 → 24.90
+
+PE-0137 → 25.02
+
+PE-0345 → 25.09
+
+
+Understanding key=lambda
+key=lambda p: p[1]
+
+
+means:
+
+"When sorting, use the second element of each part."
+
+Remember Python indexing:
+
+p[0] → first element
+
+p[1] → second element
+
+
+
+4. Sorting in Reverse
+To sort from largest to smallest:
+
+sorted(parts, key=lambda p: p[1], reverse=True)
+
+
+reverse=True reverses the sorting order.
+
+
+5. Sorting by Part Number
+We can change the lambda:
+
+sorted(parts, key=lambda p: p[0])
+
+
+Now Python sorts according to the part number.
+
+This shows why lambda is useful: we can quickly tell Python which field to use.
+
+
+6. Finding the Worst Part
+We can also use lambda with max().
+
+worst = max(
+
+    parts,
+
+    key=lambda p: abs(p[1] - 25.00)
+
+)
+
+
+Here:
+
+p[1]
+
+
+is the diameter.
+
+And:
+
+abs(p[1] - 25.00)
+
+
+calculates how far the diameter is from the nominal value 25.00.
+
+So max() finds the part furthest from 25.00.
+
+
+7. When Should We Use Lambda?
+Use lambda when the operation is:
+
+Very small
+
+Simple
+
+Used only once
+
+Easy to understand without a separate name
+
+Example:
+
+sorted(parts, key=lambda p: p[1])
+
+
+This is clear and short.
+
+
+8. When NOT to Use Lambda
+If the logic is complicated or will be reused, create a normal function.
+
+Instead of:
+
+lambda p: complicated_calculation(p)
+
+
+use:
+
+def calculate_something(p):
+
+    # complicated logic
+
+    return result
+
+
+Easy rule
+If the lambda needs a comment to explain what it does, it probably deserves a name.
+
+
+9. Lambda vs Normal Function
+Normal Function
+
+Lambda
+
+Has a name
+
+Usually unnamed
+
+Can contain multiple statements
+
+Single expression
+
+Good for reuse
+
+Good for one-time operations
+
+Easier to document
+
+Short and convenient
+
+Defined using def
+
+Defined using lambda
+
+
+10. What is Recursion?
+Recursion happens when a function calls itself.
+
+Example:
+
+def countdown(n):
+
+    if n == 0:
+
+        return
+
+
+    print(n)
+
+    countdown(n - 1)
+
+
+Calling:
+
+countdown(3)
+
+
+Produces:
+
+3
+
+2
+
+1
+
+
+The function keeps calling itself with a smaller problem.
+
