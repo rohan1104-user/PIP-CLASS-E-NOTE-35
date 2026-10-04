@@ -1,1 +1,495 @@
 
+Module IV: Shop-Floor Robustness — try/except, raise and Custom Exceptions
+1. Shop-Floor Robustness
+A robust program is not a program that never fails.
+
+A robust program is one that:
+
+Handles expected faults correctly.
+
+
+Fails at the right place when something serious happens.
+
+
+Gives a clear error message.
+
+
+Does not silently hide important problems.
+
+
+Keeps the process running when it is safe to do so.
+
+
+The main idea is:
+
+Catch what you can handle → raise what your program detects → let serious unexpected faults remain visible.
+
+
+2. Multiple except Blocks
+A program can face different types of errors.
+
+We can use multiple except blocks so that each type of error gets its own recovery.
+
+Example:
+
+try:
+
+    number = int(input("Enter a number: "))
+
+    result = 100 / number
+
+
+except ValueError:
+
+    print("Please enter a valid number.")
+
+
+except ZeroDivisionError:
+
+    print("Number cannot be zero.")
+
+
+Here:
+
+ValueError handles invalid input.
+
+
+ZeroDivisionError handles division by zero.
+
+
+This makes error handling more specific and useful.
+
+
+3. Why the Order of except Blocks Matters
+The order of except blocks is important when one exception is broader than another.
+
+A specific exception should generally come before a broader exception.
+
+Example:
+
+try:
+
+    number = int(input("Enter number: "))
+
+
+except ValueError:
+
+    print("Invalid number.")
+
+
+except Exception:
+
+    print("Some other error occurred.")
+
+
+ValueError is checked first because it is more specific.
+
+If the broader exception is placed first, it may catch the error before the specific handler gets a chance.
+
+Important Rule
+Specific exception → first
+
+Broad exception → later
+
+
+4. raise — Declaring Your Own Fault
+The raise statement allows a program to create and report an error itself.
+
+Example:
+
+if temperature > 100:
+
+    raise ValueError("Temperature is too high")
+
+
+Here, Python did not automatically discover an error.
+
+Instead, our program decided that the condition is unacceptable and raised an exception.
+
+Purpose of raise
+Detect invalid conditions.
+
+
+Stop incorrect processing.
+
+
+Report a problem immediately.
+
+
+Make the location of the fault clear.
+
+
+
+5. The Andon Cord Principle
+In a manufacturing shop floor, an andon cord allows a worker to signal a serious problem and stop the production line.
+
+The same idea can be applied to programming.
+
+raise acts like an andon cord.
+
+When the program knows that something is wrong, it should report the problem immediately instead of allowing the incorrect state to continue.
+
+Main Principle
+Raise the fault at the point where the program has enough evidence to know something is wrong.
+
+This makes debugging much easier.
+
+
+6. Creating Custom Exceptions
+Python allows us to create our own exception classes.
+
+Example:
+
+class SpecViolation(ValueError):
+
+    """A reading outside the drawing's tolerance."""
+
+
+Now SpecViolation becomes our own type of exception.
+
+We can use it when a machine reading or measurement does not satisfy a required specification.
+
+Example:
+
+raise SpecViolation("25.40 is outside the allowed tolerance")
+
+
+This gives the error a meaningful name instead of using only a generic exception.
+
+
+7. Why SpecViolation(ValueError)?
+SpecViolation inherits from ValueError.
+
+This means:
+
+A SpecViolation IS-A ValueError.
+
+Example:
+
+class SpecViolation(ValueError):
+
+    pass
+
+
+Because of inheritance, code that catches ValueError can also catch SpecViolation.
+
+Example:
+
+try:
+
+    raise SpecViolation("Out of tolerance")
+
+
+except ValueError as e:
+
+    print(e)
+
+
+The ValueError handler can catch the custom exception because SpecViolation belongs to the ValueError family.
+
+
+8. Complete SpecViolation Example
+class SpecViolation(ValueError):
+
+    """A reading outside the drawing's tolerance."""
+
+
+
+def check(dia, lower=24.95, upper=25.05):
+
+
+    if not isinstance(dia, (int, float)):
+
+        raise TypeError(
+
+            f"diameter must be a number, got {type(dia).__name__}"
+
+        )
+
+
+    if not lower <= dia <= upper:
+
+        raise SpecViolation(
+
+            f"{dia} outside {lower}–{upper}"
+
+        )
+
+
+    return "ACCEPT"
+
+
+
+try:
+
+    check(25.40)
+
+
+except SpecViolation as e:
+
+    print("quarantine:", e)
+
+
+Possible output:
+
+quarantine: 25.4 outside 24.95–25.05
+
+
+Here, 25.40 is outside the allowed range of 24.95 to 25.05.
+
+So the program raises SpecViolation.
+
+
+9. Log and Continue vs Stop the Line
+Not every error should stop the entire program.
+
+We need to decide whether a fault is:
+
+Log and Continue
+Use this when:
+
+The problem is expected.
+
+
+The record can be skipped safely.
+
+
+The rest of the data can still be processed.
+
+
+Example:
+
+for record in records:
+
+    try:
+
+        process(record)
+
+    except ValueError as e:
+
+        print("Skipping record:", e)
+
+
+The program records the problem and continues with the next record.
+
+Stop the Line
+A serious or unexpected fault may need to stop the program.
+
+This prevents the program from continuing with incorrect or unsafe data.
+
+
+10. Catch or Crash?
+A programmer must decide whether an error should be caught or allowed to stop the program.
+
+Catch the error when:
+You know what went wrong.
+
+
+You know how to recover.
+
+
+Continuing is safe.
+
+
+The error is expected.
+
+
+Let it crash when:
+The error is unexpected.
+
+
+You do not know how to safely recover.
+
+
+Continuing could produce incorrect results.
+
+
+Hiding the error would make debugging difficult.
+
+
+Important Idea
+Do not catch an error just to prevent the program from showing red text.
+
+The goal is correct behaviour, not simply avoiding a crash.
+
+
+11. Failing in the Right Place
+A robust program should fail as close as possible to the point where the problem is detected.
+
+For example:
+
+if diameter > upper:
+
+    raise SpecViolation("Diameter outside tolerance")
+
+
+This is better than allowing the invalid diameter to pass through several functions and only reporting the problem much later.
+
+Why?
+Early failure:
+
+Gives better information.
+
+
+Makes debugging easier.
+
+
+Prevents incorrect data from spreading.
+
+
+Makes the actual source of the problem clear.
+
+
+
+12. as e — Reading the Error Report
+We can use as e to store the exception object.
+
+Example:
+
+try:
+
+    check(25.40)
+
+
+except SpecViolation as e:
+
+    print("quarantine:", e)
+
+
+Here, e contains the actual exception message.
+
+So:
+
+print(e)
+
+
+can display:
+
+25.4 outside 24.95–25.05
+
+
+This gives us useful information about the fault.
+
+
+13. Important Difference: Catch vs Raise
+These two actions have different purposes.
+
+Action
+
+Purpose
+
+try
+
+Contains code that may cause an error
+
+except
+
+Handles an error
+
+raise
+
+Creates/reports an error
+
+as e
+
+Stores the exception for inspection
+
+Custom exception
+
+Gives a specific name to a particular fault
+
+Easy Example
+try:
+
+    check(25.40)
+
+
+except SpecViolation as e:
+
+    print(e)
+
+
+Inside check():
+
+raise SpecViolation("Out of tolerance")
+
+
+So:
+
+raise creates the fault → except handles the fault.
+
+
+14. What We Learned
+From this topic, we learned:
+
+A robust program does not mean a program that never fails.
+
+
+Different errors can be handled using multiple except blocks.
+
+
+The order of except blocks matters.
+
+
+Specific exceptions should generally come before broader exceptions.
+
+
+raise allows the program to declare a fault itself.
+
+
+Custom exceptions can be created for specific situations.
+
+
+Custom exceptions can inherit from existing Python exceptions.
+
+
+SpecViolation(ValueError) means a specification violation is a kind of value error.
+
+
+as e allows us to inspect the exception message.
+
+
+Some errors should be logged and handled.
+
+
+Serious or unexpected errors should not be hidden.
+
+
+A program should fail close to where the problem is detected.
+
+
+Error handling should focus on correct recovery, not simply preventing crashes.
+
+
+
+15. Main Idea
+The main idea of Shop-Floor Robustness is:
+
+Catch what you can safely handle.
+
+Raise problems when your program detects them.
+
+Let serious or unexpected faults remain visible.
+
+In a manufacturing analogy:
+
+Expected fault
+
+      ↓
+
+Catch → Handle → Continue
+
+
+Program detects serious fault
+
+      ↓
+
+raise → Report → Stop/Recover
+
+
+Unexpected fault
+
+      ↓
+
+Do not hide → Fail clearly → Fix the cause
+
