@@ -1,1 +1,297 @@
 
+Module IV: Object Life Cycle — __init__, __str__ and __del__
+1. Object Life Cycle
+An object has a life cycle, just like a machine.
+
+The main stages are:
+
+Creation / Commissioning → __init__()
+
+Identification → __str__()
+
+Working / Service → normal methods
+
+Destruction / Decommissioning → __del__()
+
+These special methods are called dunder methods because their names begin and end with double underscores.
+
+
+2. __init__() — Commissioning
+The __init__() method is used to initialize an object when it is created.
+
+It runs automatically when an object is created.
+
+Example:
+
+class Lathe:
+
+    def __init__(self, tag, max_rpm=2000):
+
+        self.tag = tag
+
+        self._max_rpm = max_rpm
+
+        self.__rpm = 0
+
+        self.__parts = 0
+
+
+When we write:
+
+L1 = Lathe("L-01")
+
+
+Python automatically calls:
+
+__init__()
+
+
+The object is initialized with valid starting values.
+
+Purpose of __init__()
+Set initial values.
+
+Initialize object attributes.
+
+Put the object into a valid and usable state.
+
+Perform setup required when the object is created.
+
+Example:
+
+self.__rpm = 0
+
+self.__parts = 0
+
+
+This means the new lathe starts with 0 RPM and 0 parts produced.
+
+
+3. __str__() — Object Nameplate
+The __str__() method defines what an object should display when it is converted to a string or printed.
+
+Example:
+
+def __str__(self):
+
+    return f"Lathe {self.tag} | {self.__rpm} rpm | {self.__parts} parts"
+
+
+Now:
+
+L1 = Lathe("L-01")
+
+print(L1)
+
+
+can display:
+
+Lathe L-01 | 0 rpm | 0 parts
+
+
+Without __str__(), Python normally gives something like:
+
+<__main__.Lathe object at 0x7f3a2c1b40>
+
+
+This contains a memory address and is not useful to a machine operator.
+
+Therefore, __str__() acts like a nameplate for the object.
+
+Purpose of __str__()
+It provides a human-readable description of an object.
+
+It should show useful information such as:
+
+Machine name/tag
+
+Current RPM
+
+Number of parts
+
+Other important status information
+
+
+4. __del__() — Decommissioning
+The __del__() method is associated with the destruction of an object.
+
+Example:
+
+def __del__(self):
+
+    print(f"{self.tag} decommissioned after {self.__parts} parts")
+
+
+If we write:
+
+del L1
+
+
+and the object has no other references, Python may destroy the object and call __del__().
+
+Example output:
+
+L-01 decommissioned after 0 parts
+
+
+Purpose of __del__()
+It can be used for actions associated with object cleanup or logging when the object is destroyed.
+
+However, we should not depend on exactly when __del__() will run, because Python controls when an object is actually destroyed.
+
+
+5. Important Difference Between del and __del__()
+These are not the same thing.
+
+del L1
+
+
+removes the reference/name L1.
+
+It does not necessarily mean that the object is immediately destroyed.
+
+The object is destroyed when there are no remaining references to it.
+
+Therefore:
+
+del removes a reference, while __del__() is the method associated with object destruction.
+
+
+6. Complete Example
+class Lathe:
+
+    def __init__(self, tag, max_rpm=2000):
+
+        self.tag = tag
+
+        self._max_rpm = max_rpm
+
+        self.__rpm = 0
+
+        self.__parts = 0
+
+
+        print(f"{tag} commissioned, {max_rpm} rpm rated")
+
+
+    def __str__(self):
+
+        return f"Lathe {self.tag} | {self.__rpm} rpm | {self.__parts} parts"
+
+
+    def __del__(self):
+
+        print(f"{self.tag} decommissioned after {self.__parts} parts")
+
+
+
+L1 = Lathe("L-01")
+
+
+print(L1)
+
+
+del L1
+
+
+Possible output:
+
+L-01 commissioned, 2000 rpm rated
+
+Lathe L-01 | 0 rpm | 0 parts
+
+L-01 decommissioned after 0 parts
+
+
+
+7. Three Important Dunder Methods
+Method
+
+Purpose
+
+When it works
+
+__init__()
+
+Initialize object
+
+When object is created
+
+__str__()
+
+Give readable object description
+
+When object is printed/converted to string
+
+__del__()
+
+Associated with object destruction
+
+When object is destroyed
+
+
+8. Easy Way to Remember
+Think about a real machine:
+
+__init__() → Commissioning
+
+The machine arrives and is prepared for operation.
+
+__str__() → Nameplate
+
+Someone asks, "Which machine is this?" The machine gives useful information.
+
+Normal methods → Service
+
+The machine performs its normal work.
+
+start()
+
+make_part()
+
+status()
+
+
+__del__() → Decommissioning
+
+The machine reaches the end of its object lifetime and is cleaned up/destroyed.
+
+
+9. What We Learned
+From this topic, we learned:
+
+Objects have a life cycle.
+
+__init__() initializes an object when it is created.
+
+__init__() should leave the object in a valid and usable state.
+
+__str__() provides a human-readable representation of an object.
+
+Without __str__(), Python normally displays a technical object representation containing information such as its memory address.
+
+__del__() is associated with the destruction of an object.
+
+del removes a reference; it does not always mean immediate destruction.
+
+We should not depend on the exact timing of __del__().
+
+These methods are examples of dunder (double-underscore) methods.
+
+__init__, __str__, and __del__ help us manage the life cycle and representation of objects.
+
+10. Main Idea
+__init__() prepares the object.
+__str__() tells us what the object is.
+__del__() is associated with the object's destruction.
+
+In the Lathe example:
+
+Creation       → __init__()
+
+Identification → __str__()
+
+Working        → start(), make_part(), status()
+
+Destruction    → __del__()
+
