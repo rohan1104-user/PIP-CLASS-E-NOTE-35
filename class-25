@@ -1,1 +1,456 @@
 
+Module V: String Methods & Formatting
+1. Introduction to String Methods
+Module V mein humne Python ke string methods aur string formatting ke baare mein seekha.
+
+String methods ka use text ko:
+
+Clean karne
+
+
+Change karne
+
+
+Search karne
+
+
+Split karne
+
+
+Combine karne
+
+
+Proper format mein display karne
+
+
+ke liye kiya jaata hai.
+
+Good formatting ka purpose sirf decoration nahi hai. A well-formatted report easy to read, understand and verify hoti hai.
+
+
+2. Why Formatting is Important
+Agar report mein data ek messy heap ki tarah ho:
+
+PE-0137 25.02 ACCEPT PE-0138 26.40 REJECT
+
+
+to supervisor ke liye read karna difficult ho sakta hai.
+
+Formatted report:
+
+Part        Diameter    Status
+
+PE-0137       25.02    ACCEPT
+
+PE-0138       26.40    REJECT
+
+
+zyada clear aur professional hoti hai.
+
+What I learned
+Formatting is not just decoration. Legibility is important because people need to understand data quickly and correctly.
+
+
+3. .strip() Method
+.strip() string ke beginning aur end se extra whitespace remove karta hai.
+
+Example:
+
+field = "   PE-0137   "
+
+clean = field.strip()
+
+
+print(clean)
+
+
+Output:
+
+PE-0137
+
+
+Shop-floor use
+Log files aur input fields mein unwanted spaces remove karne ke liye .strip() bahut useful hai.
+
+
+4. .upper() and .lower()
+.upper() text ko uppercase mein convert karta hai.
+
+shift = "night"
+
+print(shift.upper())
+
+
+Output:
+
+NIGHT
+
+
+.lower() text ko lowercase mein convert karta hai.
+
+shift = "NIGHT"
+
+print(shift.lower())
+
+
+Output:
+
+night
+
+
+Why useful?
+"night", "Night" aur "NIGHT" ko same form mein convert karke comparison easy ho jaata hai.
+
+
+5. .replace() Method
+.replace(a, b) string mein ek value ko doosri value se replace karta hai.
+
+Example:
+
+value = "25,02"
+
+value = value.replace(",", ".")
+
+
+print(value)
+
+
+Output:
+
+25.02
+
+
+Shop-floor use
+Stray characters ya incorrect separators ko clean karne ke liye .replace() useful hai.
+
+
+6. .startswith() Method
+.startswith() check karta hai ki string kisi particular text se start hoti hai ya nahi.
+
+Example:
+
+part = "PE-0137"
+
+
+print(part.startswith("PE-"))
+
+
+Output:
+
+True
+
+
+Shop-floor use
+Iska use particular part codes ko filter karne ke liye kiya ja sakta hai.
+
+
+7. .split() Method
+.split() ek string ko multiple parts mein divide karke list banata hai.
+
+Example:
+
+row = "PE-0137,25.02,ACCEPT"
+
+
+fields = row.split(",")
+
+
+print(fields)
+
+
+Output:
+
+['PE-0137', '25.02', 'ACCEPT']
+
+
+What I learned
+.split() ka use CSV ya log lines ko individual fields mein break karne ke liye hota hai.
+
+
+8. .join() Method
+.join() list ke multiple strings ko ek single string mein combine karta hai.
+
+Example:
+
+fields = ["PE-0137", "25.02", "ACCEPT"]
+
+
+row = ",".join(fields)
+
+
+print(row)
+
+
+Output:
+
+PE-0137,25.02,ACCEPT
+
+
+Important
+.split() aur .join() ek pair ki tarah kaam karte hain.
+
+split → text ko parts mein todta hai
+
+join → parts ko text mein jodta hai
+
+
+9. Split and Join Together
+Example:
+
+fields = ["PE-0137", "25.02", "ACCEPT"]
+
+
+row = ",".join(fields)
+
+
+back = row.split(",")
+
+
+print(row)
+
+print(back)
+
+
+Output:
+
+PE-0137,25.02,ACCEPT
+
+['PE-0137', '25.02', 'ACCEPT']
+
+
+Easy way to remember
+String → split() → List
+
+List → join() → String
+
+
+Ye concept future mein CSV files create aur read karne mein important hoga.
+
+
+10. .zfill() Method
+.zfill(n) string ke beginning mein zeros add karta hai jab tak required length complete na ho.
+
+Example:
+
+part = "7"
+
+
+print(part.zfill(4))
+
+
+Output:
+
+0007
+
+
+Shop-floor use
+Part numbers aur machine IDs ko fixed format mein display karne ke liye .zfill() useful hai.
+
+
+11. .count() and .find()
+.count()
+.count() batata hai ki koi text kitni baar appear hua.
+
+text = "PE-0137,PE-0138,PE-0137"
+
+
+print(text.count("PE-"))
+
+
+Output:
+
+3
+
+
+.find()
+.find() batata hai ki particular text pehli baar kis position par mila.
+
+text = "PE-0137"
+
+
+print(text.find("-"))
+
+
+Ye - ki position return karega.
+
+What I learned
+Ye methods quick checks aur parsing se pehle useful hote hain.
+
+
+12. Introduction to f-Strings
+f-string Python mein strings ke andar variables aur expressions ko easily insert karne ka method hai.
+
+Example:
+
+tag = "L-01"
+
+rpm = 1500
+
+
+print(f"Machine {tag} is running at {rpm} rpm")
+
+
+Output:
+
+Machine L-01 is running at 1500 rpm
+
+
+f-strings formatting ko simple aur readable banate hain.
+
+
+13. Format Specification
+Format specification ka use values ko specific width, alignment aur decimal places ke saath display karne ke liye hota hai.
+
+Example:
+
+f"{dia:>10.2f}"
+
+
+Isko parts mein samajh sakte hain:
+
+{dia:>10.2f}
+
+      │ │  │
+
+      │ │  └── f = fixed-point number
+
+      │ └───── .2 = 2 decimal places
+
+      └─────── >10 = right aligned, 10 characters wide
+
+
+Example:
+
+dia = 25.02
+
+
+print(f"{dia:>10.2f}")
+
+
+Output mein number fixed width aur 2 decimal places ke saath appear hoga.
+
+
+14. Alignment, Width and Number Formatting
+Different format specifications:
+
+f"{tag:<12}"
+
+
+< means left alignment.
+
+f"{n:>6}"
+
+
+> means right alignment.
+
+f"{name:^12}"
+
+
+^ means centre alignment.
+
+Other useful examples
+f"{total:>12,.2f}"
+
+
+This adds:
+
+Right alignment
+
+
+Width of 12
+
+
+Comma separator
+
+
+2 decimal places
+
+
+Example:
+
+1,240.50
+
+
+For percentages:
+
+f"{pct:>6.1%}"
+
+
+If:
+
+pct = 0.9375
+
+
+Output:
+
+93.8%
+
+
+
+15. What We Learned + Main Idea
+From this topic, I learned:
+
+String methods help us clean and process text.
+
+
+.strip() removes extra spaces.
+
+
+.upper() and .lower() change letter case.
+
+
+.replace() replaces unwanted characters or text.
+
+
+.startswith() checks how a string begins.
+
+
+.split() converts text into a list of fields.
+
+
+.join() combines a list into a string.
+
+
+.zfill() adds leading zeros.
+
+
+.count() counts occurrences of text.
+
+
+.find() finds the position of text.
+
+
+f-strings make formatted output easy.
+
+
+Format specifications control alignment, width and decimals.
+
+
+Numbers are usually right-aligned so decimal places and magnitudes are easier to compare.
+
+
+Labels are usually left-aligned so they are easier to scan.
+
+
+Proper formatting turns raw data into a clear and readable report.
+
+
+Main Idea
+String Methods → Clean and Process Data
+
+        ↓
+
+split() → Break text into fields
+
+join()  → Build text from fields
+
+        ↓
+
+f-strings → Format the final output
+
+        ↓
+
+Readable and Professional Report
+
+
+In short: clean the data, format the data, and present the data so that a person can understand it quickly.
