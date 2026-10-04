@@ -1,1 +1,140 @@
 
+CS-1202 · Tuples & Sets
+What We Learned From This Topic
+🎯 Learning Outcomes
+From Tuples & Sets, we learned that Python provides different containers for different engineering requirements. The correct container depends on whether we need order, mutability, or uniqueness.
+
+1. 🔒 Tuples — Sealed Records
+Tuples are created using round brackets ( ).
+
+They are ordered.
+
+They are immutable, so their elements cannot be changed after creation.
+
+They are useful for fixed data such as specification limits and calibration constants.
+
+SPEC = (24.95, 25.05)
+
+lower, upper = SPEC
+
+This is called tuple unpacking.
+
+
+2. 🏷️ Sets — No-Duplicate Containers
+Sets are created using { }.
+
+They contain unique elements only.
+
+Duplicate values are automatically removed.
+
+They are useful for finding distinct values and performing fast membership checks.
+
+codes = {"D01", "D07", "D01"}
+
+Result:
+
+{'D01', 'D07'}
+
+
+3. 🔀 Set Operations ⭐
+We learned how to compare two groups of data.
+
+Operation
+
+Symbol
+
+Meaning
+
+Intersection
+
+&
+
+Common elements
+
+Union
+
+`
+
+`
+
+Difference
+
+-
+
+Elements present only in first set
+
+Example:
+
+day = {"D01", "D03", "D07", "D12"}
+
+night = {"D07", "D12", "D19", "D22"}
+
+
+day & night
+
+Result:
+
+{'D07', 'D12'}
+
+These are the defect codes appearing in both shifts.
+
+
+4. 🧠 Choosing the Correct Container
+Container
+
+Ordered
+
+Mutable
+
+Duplicates
+
+Best Use
+
+List [ ]
+
+✅
+
+✅
+
+✅
+
+Changing collection
+
+Tuple ( )
+
+✅
+
+❌
+
+✅
+
+Fixed records/specifications
+
+Set { }
+
+❌
+
+✅
+
+❌
+
+Unique values/comparison
+
+⭐ Easy Memory Trick
+LIST → Parts that change
+TUPLE → Specifications that stay fixed
+SET → Unique values only
+
+
+5. 🏭 Production Engineering Application
+We learned that container selection is an engineering decision:
+
+List: Store changing dimensional readings.
+
+Tuple: Store fixed tolerance limits.
+
+Set: Find distinct defect codes or compare defects between shifts.
+
+
+🏆 Final Learning
+This topic taught us how to choose between lists, tuples, and sets according to the requirement. Lists are ordered and mutable, tuples are ordered and immutable, while sets store unique values and support powerful operations such as intersection, union, and difference.
