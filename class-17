@@ -1,1 +1,366 @@
 
+Topic: Functions — “Fixtures for Code”
+1. What is a Function?
+A function is a reusable block of Python code designed to perform a particular task.
+
+Instead of writing the same code again and again, we write it once inside a function and call it whenever we need it.
+
+def greet():
+
+    print("Hello")
+
+
+Calling the function:
+
+greet()
+
+
+Output:
+
+Hello
+
+
+Why do we use functions?
+Functions help us:
+
+Avoid repeating code
+
+Make programs shorter
+
+Make programs easier to understand
+
+Make programs easier to test
+
+Make programs easier to maintain
+
+Reuse the same logic with different inputs
+
+
+2. Basic Structure of a Function
+A function generally has four important parts:
+
+def function_name(parameters):
+
+    # body
+
+    return result
+
+
+The four parts
+1. def
+
+Tells Python that we are defining a function.
+
+2. Function name
+
+The name used to identify the function.
+
+def inspect():
+
+
+3. Parameters
+
+Inputs that the function can receive.
+
+def inspect(dia):
+
+
+Here, dia is a parameter.
+
+4. Body
+
+The instructions that the function performs.
+
+if dia > 25.05:
+
+    return "REWORK"
+
+
+5. return
+
+Sends the result back to the program.
+
+
+3. Simple Function Example
+def add(a, b):
+
+    return a + b
+
+
+Calling it:
+
+answer = add(10, 20)
+
+print(answer)
+
+
+Output:
+
+30
+
+
+Here:
+
+add → function name
+
+a, b → parameters
+
+10, 20 → arguments
+
+a + b → operation
+
+return → sends the answer back
+
+
+4. Parameters vs Arguments
+This is important.
+
+Parameter
+A parameter is the variable written when defining a function.
+
+def add(a, b):
+
+
+a and b are parameters.
+
+Argument
+An argument is the actual value supplied when calling the function.
+
+add(10, 20)
+
+
+10 and 20 are arguments.
+
+Easy memory trick
+Parameter = placeholder
+Argument = actual value
+
+
+5. Positional Arguments
+Arguments can be passed according to their position.
+
+def inspect(dia, lower, upper):
+
+    if dia > upper:
+
+        return "REWORK"
+
+    elif dia < lower:
+
+        return "SCRAP"
+
+    return "ACCEPT"
+
+
+Calling:
+
+inspect(25.02, 25.00, 25.04)
+
+
+Python matches:
+
+dia   = 25.02
+
+lower = 25.00
+
+upper = 25.04
+
+
+The order matters.
+
+
+6. Keyword Arguments
+We can specify the parameter name directly.
+
+inspect(25.02, upper=25.01)
+
+
+Here we are explicitly saying:
+
+upper = 25.01
+
+
+Keyword arguments make code easier to understand.
+
+For example:
+
+inspect(dia=25.02, lower=25.00, upper=25.04)
+
+
+
+7. Default Arguments
+A parameter can have a default value.
+
+def inspect(dia, lower=24.95, upper=25.05):
+
+    if dia > upper:
+
+        return "REWORK"
+
+    elif dia < lower:
+
+        return "SCRAP"
+
+    return "ACCEPT"
+
+
+If we write:
+
+inspect(25.02)
+
+
+Python automatically uses:
+
+lower = 24.95
+
+upper = 25.05
+
+
+So the result is:
+
+ACCEPT
+
+
+Changing the default
+We can override the default:
+
+inspect(25.02, upper=25.01)
+
+
+Now upper becomes 25.01.
+
+
+8. return Statement
+The return statement sends a value from the function back to the caller.
+
+def square(x):
+
+    return x * x
+
+
+Then:
+
+result = square(5)
+
+print(result)
+
+
+Output:
+
+25
+
+
+The returned value can be:
+
+Stored in a variable
+
+Printed
+
+Used in another calculation
+
+Passed to another function
+
+Compared using conditions
+
+Example:
+
+if square(5) > 20:
+
+    print("Large")
+
+
+
+9. print() vs return
+Function using print()
+def add(a, b):
+
+    print(a + b)
+
+
+Calling:
+
+x = add(2, 3)
+
+
+The screen shows:
+
+5
+
+
+But:
+
+print(x)
+
+
+gives:
+
+None
+
+
+Function using return
+def add(a, b):
+
+    return a + b
+
+
+Now:
+
+x = add(2, 3)
+
+print(x)
+
+
+Output:
+
+5
+
+
+Important difference
+print()
+
+return
+
+Displays information
+
+Sends information back
+
+Mainly for humans
+
+Mainly for programs
+
+Does not provide the result to the caller
+
+Provides the result to the caller
+
+Function returns None if there is no return
+
+Function returns the specified value
+
+Remember
+Print shows. Return gives back.
+
+
+10. What Happens Without return?
+Consider:
+
+def multiply(a, b):
+
+    result = a * b
+
+
+There is no return.
+
+So:
+
+x = multiply(4, 5)
+
+print(x)
+
+
+Output:
+
+None
+
+
+Python functions return None when they don't explicitly return a value
+
