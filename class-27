@@ -1,1 +1,418 @@
 
+Module V: Read a Production Log — File Handling
+1. Introduction to File Handling
+Ab tak humare programs data ko mostly manually input lete the aur result screen par print karte the. Program band hone ke baad woh data generally save nahi hota tha.
+
+File handling ki help se program data ko permanently store, read, update aur append kar sakta hai.
+
+What I learned
+A program jo data save nahi kar sakta, woh sirf demonstration jaisa hai. A useful production program ko records ko store aur retrieve karna aana chahiye.
+
+
+2. Persistence
+Persistence ka meaning hai data ka program ke stop hone ke baad bhi available rehna.
+
+Example:
+
+Program Running
+
+      ↓
+
+Data Created
+
+      ↓
+
+Data Saved to File
+
+      ↓
+
+Program Stops
+
+      ↓
+
+Data Still Exists
+
+
+Production environment mein logs, measurements, part numbers aur inspection results ko save karna important hota hai.
+
+
+3. Opening a File with open()
+Python mein file open karne ke liye open() function use hota hai.
+
+Example:
+
+f = open("production_log.txt")
+
+
+By default, file read mode ('r') mein open hoti hai.
+
+Lekin file ko manually open karne ke bajay with open() use karna better practice hai.
+
+
+4. The with open() Block
+Example:
+
+with open("production_log.txt") as f:
+
+    for line in f:
+
+        print(line)
+
+
+with block ke andar file use hoti hai.
+
+Jab block complete ho jaata hai, Python file ko automatically close kar deta hai.
+
+Agar block ke andar exception bhi aa jaye, tab bhi file properly close ho jaati hai.
+
+What I learned
+with file handling ko safer banata hai because humein manually close() call karne ki zarurat nahi padti.
+
+
+5. Why with is Better Than Bare open()
+Without with:
+
+f = open("production_log.txt")
+
+
+# work with file
+
+
+f.close()
+
+
+Agar program f.close() tak pahunchne se pehle crash ho gaya, file properly close na hone ka risk ho sakta hai.
+
+With with:
+
+with open("production_log.txt") as f:
+
+    # work with file
+
+
+Python block ke end par file ko automatically close karta hai.
+
+Important Rule
+with block ke bahar file automatically closed hoti hai.
+
+
+6. Reading a File Line by Line
+Large files ke liye file ko ek-ek line read karna best approach hai.
+
+Example:
+
+with open("production_log.txt") as f:
+
+    for line in f:
+
+        print(line)
+
+
+Iska advantage ye hai ki Python poori file ko ek saath memory mein load nahi karta.
+
+Even a very large log file can be processed line by line.
+
+
+7. .strip() and Skipping Blank Lines
+Production logs mein extra spaces aur blank lines ho sakti hain.
+
+Example:
+
+with open("production_log.txt") as f:
+
+    for line in f:
+
+        line = line.strip()
+
+
+        if not line:
+
+            continue
+
+
+        print(line)
+
+
+.strip():
+
+Beginning aur end ki whitespace remove karta hai.
+
+
+if not line:
+
+Empty lines ko identify karta hai.
+
+
+continue:
+
+Blank line ko skip karke next line par move karta hai.
+
+
+
+8. Reading a Production Log
+Example log:
+
+PE-0137;25.02;Night
+
+PE-0138;25.01;Day
+
+PE-0139;25.05;Night
+
+
+Hum ise Python mein read kar sakte hain:
+
+with open("production_log.txt") as f:
+
+    for line in f:
+
+        line = line.strip()
+
+
+        if not line:
+
+            continue
+
+
+        code, dia, shift = line.split(";")
+
+
+        print(code.strip(), float(dia))
+
+
+Yahan:
+
+line.strip() → extra whitespace remove karta hai.
+
+
+line.split(";") → line ko fields mein divide karta hai.
+
+
+float(dia) → diameter ko number mein convert karta hai.
+
+
+
+9. Three Ways to Read a File
+Python mein file read karne ke different methods hain.
+
+1. Line by line
+for line in f:
+
+    print(line)
+
+
+Best choice for large files.
+
+2. readlines()
+lines = f.readlines()
+
+
+Ye file ki saari lines ko ek list mein load karta hai.
+
+Small files ke liye useful hai.
+
+3. read()
+text = f.read()
+
+
+Ye complete file ko ek single string mein read karta hai.
+
+Small files ke liye suitable hai.
+
+
+10. The Four File Modes
+Python mein commonly four important file modes hain:
+
+Mode
+
+Effect on existing file
+
+Main Use
+
+'r'
+
+File ko sirf read karta hai; data change nahi hota
+
+Reading logs
+
+'w'
+
+Existing file ko empty/truncate karta hai
+
+Fresh report
+
+'a'
+
+Existing data ko preserve karke end mein add karta hai
+
+Logs
+
+'x'
+
+File already exists ho to error deta hai
+
+New file creation
+
+
+11. 'r' — Read Mode
+'r' ka meaning hai read only.
+
+Example:
+
+with open("production_log.txt", "r") as f:
+
+    for line in f:
+
+        print(line)
+
+
+Existing file ka data change nahi hota.
+
+Agar file exist nahi karti, Python error deta hai.
+
+Use
+Production logs ko read karne ke liye 'r' safest mode hai.
+
+
+12. 'w' — Write Mode
+'w' mode dangerous ho sakta hai.
+
+Agar file already exist karti hai, to Python us file ka existing content immediately erase/truncate kar deta hai when the file is opened.
+
+Example:
+
+with open("production_log.txt", "w") as f:
+
+    f.write("New report")
+
+
+Agar pehle file mein important records the, woh erase ho sakte hain.
+
+Important Warning
+'w' data ko write karne ke time nahi, file open karte hi truncate karta hai.
+
+Isliye existing log ko accidentally 'w' mode mein open nahi karna chahiye.
+
+
+13. 'a' — Append Mode
+'a' mode existing data ko delete nahi karta.
+
+Ye new data ko file ke end mein add karta hai.
+
+Example:
+
+with open("production_log.txt", "a") as f:
+
+    f.write("PE-0140;25.03;Night\n")
+
+
+Existing records safe rahenge aur new record end mein add ho jayega.
+
+Use
+Production logs mein new records continuously add karne ke liye 'a' mode useful hai.
+
+Important Rule
+Log ko add karna hai → 'a'
+
+Purani file replace karni hai → 'w'
+
+
+14. 'x' — Exclusive Creation Mode
+'x' mode ka use ek new file create karne ke liye hota hai.
+
+Agar file already exist karti hai, Python error dega.
+
+Example:
+
+with open("new_log.txt", "x") as f:
+
+    f.write("First record\n")
+
+
+Agar new_log.txt already exist karti hai, file overwrite nahi hogi.
+
+What I learned
+'x' mode useful hai jab humein ensure karna ho ki existing file accidentally overwrite na ho.
+
+
+15. What We Learned + Main Idea
+From this topic, I learned:
+
+File handling allows programs to store data permanently.
+
+
+Persistence means data remains available after the program stops.
+
+
+open() is used to open a file.
+
+
+with open() automatically closes the file when the block ends.
+
+
+Files can be processed efficiently line by line.
+
+
+.strip() removes unwanted whitespace.
+
+
+continue can be used to skip blank lines.
+
+
+read() reads the complete file as one string.
+
+
+readlines() reads all lines into a list.
+
+
+for line in f reads the file one line at a time.
+
+
+'r' is used for reading.
+
+
+'w' overwrites/truncates an existing file immediately when opened.
+
+
+'a' preserves existing data and adds new data at the end.
+
+
+'x' creates a new file only if it does not already exist.
+
+
+We should never use 'w' on an important log unless we intentionally want to replace its contents.
+
+
+Main Idea
+Production Data
+
+      ↓
+
+    File
+
+      ↓
+
+with open(...)
+
+      ↓
+
+Read / Process / Write
+
+      ↓
+
+Saved Production Records
+
+
+Easy Way to Remember
+'r' → Read
+
+'w' → Wipe and Write
+
+'a' → Add at the end
+
+'x' → Create eXclusively
+
+
+Most important lesson:
+
+Use 'r' to read, 'a' to add to a log, 'w' only when you intentionally want to replace the file, and 'x' when overwriting an existing file must be impossible.
+
