@@ -1,1 +1,304 @@
 
+Module IV: Classes & Objects
+1. What is a Class?
+A class is a blueprint or drawing used to create objects.
+
+Think of it like a machine drawing:
+
+The drawing describes what a machine should have.
+
+The actual machines are the objects created from that drawing.
+
+One class can create many objects.
+
+Each object can have its own data.
+
+Example:
+
+class Lathe:
+
+    pass
+
+
+Here, Lathe is a class.
+
+
+2. What is an Object?
+An object is an actual instance created from a class.
+
+L1 = Lathe()
+
+L2 = Lathe()
+
+
+Here:
+
+L1 is one object.
+
+L2 is another object.
+
+Both are created from the same Lathe class.
+
+Important
+Even though L1 and L2 come from the same class, their data can be different.
+
+
+3. Class vs Object
+Class
+
+Object
+
+Blueprint/drawing
+
+Actual machine/part
+
+Defines structure
+
+Contains actual data
+
+Written once
+
+Can create many
+
+Example: Lathe
+
+Example: L1, L2
+
+Easy way to remember:
+
+Class = Blueprint
+Object = Thing made from blueprint
+
+
+4. __init__() Method
+__init__() is a special method that runs automatically when an object is created.
+
+It is commonly used to give an object its initial data.
+
+class Lathe:
+
+    def __init__(self, tag):
+
+        self.tag = tag
+
+
+Now:
+
+L1 = Lathe("L-01")
+
+L2 = Lathe("L-02")
+
+
+The objects get different tags.
+
+L1.tag → "L-01"
+
+L2.tag → "L-02"
+
+
+Important
+__init__() is also called the constructor in basic Python teaching.
+
+
+5. Attributes
+An attribute is data that belongs to an object.
+
+Example:
+
+class Lathe:
+
+    def __init__(self, tag):
+
+        self.tag = tag
+
+        self.rpm = 0
+
+        self.parts_made = 0
+
+
+Here the attributes are:
+
+tag
+
+rpm
+
+parts_made
+
+
+They represent what the machine has or knows about itself.
+
+Accessing attributes
+L1.tag
+
+L1.rpm
+
+L1.parts_made
+
+
+
+6. Methods
+A method is a function written inside a class.
+
+Methods describe what an object can do.
+
+Example:
+
+class Lathe:
+
+    def start(self, rpm):
+
+        self.rpm = rpm
+
+
+start() is a method.
+
+We call it using:
+
+L1.start(1200)
+
+
+Now:
+
+L1.rpm
+
+
+is:
+
+1200
+
+
+
+7. What is self?
+self is one of the most important concepts in classes.
+
+Simple definition:
+self refers to the particular object that is currently being used.
+
+For example:
+
+L1.start(1200)
+
+
+Python knows that the method should modify L1.
+
+Therefore:
+
+self.rpm = 1200
+
+
+means:
+
+Set the RPM of the current machine to 1200.
+
+If we write:
+
+L2.start(800)
+
+
+then self refers to L2.
+
+So:
+
+self.rpm = 800
+
+
+changes L2's RPM.
+
+Remember
+self = the current object
+
+
+8. Complete Lathe Example
+class Lathe:
+
+
+    def __init__(self, tag, max_rpm=2000):
+
+        self.tag = tag
+
+        self.max_rpm = max_rpm
+
+        self.rpm = 0
+
+        self.parts_made = 0
+
+
+    def start(self, rpm):
+
+        if rpm > self.max_rpm:
+
+            return "REFUSED: over rated speed"
+
+
+        self.rpm = rpm
+
+        return f"{self.tag} running at {rpm} rpm"
+
+
+    def make_part(self):
+
+        if self.rpm == 0:
+
+            return "REFUSED: spindle stopped"
+
+
+        self.parts_made += 1
+
+        return f"{self.tag} made part #{self.parts_made}"
+
+
+
+9. Creating Objects
+We can create multiple objects from the same class:
+
+L1 = Lathe("L-01")
+
+L2 = Lathe("L-02", 3500)
+
+
+Here:
+
+L1 → Lathe object
+
+L2 → Lathe object
+
+
+Both use the same class, but their data is independent.
+
+
+10. Object State
+The state of an object means the current values of its attributes.
+
+Initially:
+
+L1 = Lathe("L-01")
+
+
+State:
+
+tag = "L-01"
+
+max_rpm = 2000
+
+rpm = 0
+
+parts_made = 0
+
+
+After:
+
+L1.start(1200)
+
+L1.make_part()
+
+
+State becomes:
+
+tag = "L-01"
+
+max_rpm = 2000
+
+rpm = 1200
+
+parts_made = 1
+
