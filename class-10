@@ -1,1 +1,86 @@
 
+1. Basic Operators
+• Adds two numbers or joins text together.
+• Subtraction (-): Takes the right number away from the left number.
+• Multiplication (*): Multiplies two numbers.
+• Division (/): Divides the left number by the right number.
+• Modulus (%): Gives the remainder left over after division.
+
+2. // and % — VERY IMPORTANT
+Suppose you have 137 parts and one box holds 12 parts.
+
+Complete boxes:
+
+137 // 12
+
+Answer: 11
+
+Remaining parts:
+
+137 % 12
+
+Answer: 5
+
+
+3. The 25 + "30" error
+25 + "30"
+
+This gives a TypeError because:
+
+25 is an int
+
+"30" is a str
+
+Python doesn't automatically add an integer and a string.
+
+Convert the string to integer:
+
+25 + int("30")
+
+Output:
+
+55
+
+Or convert the number to a string:
+
+str(25) + "30"
+
+Output:
+
+"2530"
+
+4. input() — remember this pattern
+input() always gives you a string.
+
+So if you want a number:
+
+n = int(input("How many? "))
+
+For example:
+
+n = int(input("Enter number of parts: "))
+
+print(n * 2)
+
+If the user enters 10, Python converts "10" into 10.
+
+5. Comparison operators
+You should also know:
+
+==    equal to
+
+!=    not equal to
+
+<     less than
+
+>     greater than
+
+Examples:
+
+10 == 10    # True
+
+10 != 5     # True
+
+10 < 20     # True
+
+10 > 20     # False
