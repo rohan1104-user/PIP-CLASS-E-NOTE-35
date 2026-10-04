@@ -1,1 +1,321 @@
 
+🛠️ Python OOP Core Concepts: Classes & Objects
+1. The Core Concept
+Class (class Lathe): The blueprint or technical drawing. It is written once and defines the attributes and behavior for all machines of that type.
+
+Instance / Object (L1, L2): The physical unit built from the drawing and placed on the shop floor.
+
+L1 = Lathe("L-01") commissions a specific physical lathe with its own unique identity and status.
+
+2. Attributes (What the Machine HAS)
+Attributes are variables tied to an instance that track its parameters, ratings, or current status.
+
+Identity & Rating: self.tag (nameplate ID), self.max_rpm (rating limit)
+
+Dynamic State: self.rpm (current running speed), self.parts_made (production counter)
+
+Accessing Attributes:
+
+Python
+L1.tag         # Returns 'L-01'
+L1.rpm         # Returns current state (0)
+L1.parts_made  # Returns total count (0)
+3. Methods (What the Machine DOES)
+Methods are functions defined inside a class that perform actions or alter the machine's state.
+
+Initialization (__init__): Runs automatically when a machine is commissioned to set default values and parameters.
+
+Operations (start, make_part): Actions that modify state and enforce boundary conditions (e.g., rejecting an over-speed command or refusing to cut parts while the spindle is stopped).
+
+Executing Methods:
+
+Python
+L1.start(1200)   # Sets L1's speed to 1200 RPM
+L1.make_part()   # Increments L1's parts counter
+4. Understanding self
+What is self? It represents the specific instance executing the code. It answers the question: "Which machine are we operating right now?"
+
+How Python handles it:
+
+Executing L1.make_part() is converted under the hood to Lathe.make_part(L1).
+
+self.parts_made += 1 updates L1's internal counter without affecting L2 or any other machine.
+
+📋 Quick Reference: Classroom Partner Exercise
+A quick structural lookup for the D-255 notebook task (3 attributes, 2 methods):
+
+Machine	3 Attributes (HAS)	2 Methods (DOES)
+Pump	flow_rate, max_pressure, is_primed	prime(), set_flow(gpm)
+Press	tonnage, stroke_length, pressure_psi	clamp(), retract()
+Conveyor	belt_speed, max_load_kg, is_jammed	start_belt(), clear_jam()
+The Tool Crib.
+
+Module II opens. No workshop forges every tool it uses — there's a crib, a storekeeper, and a requisition slip. Python is the same: thousands of ready-made tools live in modules, and import is the slip that draws them to your bench. Today: the crib system, the math and random toolboxes, and the error you get for using a tool you never signed out.
+
+
+
+NEW · traceback species #3
+
+MARKS TODAY · Quiz + Activity + Attendance
+
+NEXT HOUR · Job 11, Room D-255
+
+OP
+
+Operation Sequence · Today's Route Sheet
+
+60 min total
+
+OP 10
+
+Module II map. The five-class run: today the crib, next hour date-time & arrays, then strings, then lists twice. The data era begins.
+
+~4 min
+
+OP 20
+
+Lecture · the crib system. The three requisition styles (panel below), run live: math.sqrt(50), math.pi, random.randint(1,6).
+
+~14 min
+
+OP 30
+
+Ceiling vs floor. The pallet problem's missing piece: 137//12 = 11 boxes you can fill, but math.ceil(137/12) = 12 boxes you must order. Two questions the shop asks daily, one operator each.
+
+~8 min
+
+OP 40
+
+Activity · the requisition desk. The game below in pairs, then on one phone in Colab: draw random.uniform(24.90, 25.10) ten times and hand-sort each into the three bins from Job 09. A simulated inspection bench!
+
+~18 min · /10
+
+OP 50
+
+Teach-back. New partner: explain the difference between import math and from math import sqrt using the crib story. Names in notebooks.
+
+~8 min
+
+OP 60
+
+Quiz + roll on. Two requisition slips to judge on paper, then walk to D-255. One notebook entry covers the double shift.
+
+~8 min · quiz
+
+CR
+
+The Crib System · Three Requisition Styles
+
+Sign out before you cut
+
+Whole toolbox to the bench
+
+Draw the entire box; every tool is used with its box name in front. Clear, verbose, never ambiguous.
+
+
+
+import math
+
+math.sqrt(50)
+
+math.pi
+
+One tool, signed out by name
+
+Take only what you need; use it bare, no box name. Shorter — but the tool no longer answers to math.sqrt.
+
+
+
+from math import sqrt
+
+sqrt(50)
+
+Reading the crib register
+
+Don't memorise the inventory — query it. The crib keeps its own catalogue and every tool carries its manual.
+
+
+
+dir(math) # inventory
+
+help(math.sqrt) # the manual
+
+>>> sqrt(50)
+
+NameError: name 'sqrt' is not defined
+
+
+
+>>> import math
+
+>>> math.sqrt(50)
+
+7.0710678118654755
+
+Traceback species #3 · NameError: you reached for a tool that was never signed out. Your collection now holds three — TypeError (wrong materials welded), ValueError (hopeless input), NameError (tool not drawn). Learn to tell them apart by the first line; each points to a different kind of fix.
+
+SP
+
+Specifications · What You Should Take Away
+
+Inspect yourself against these
+
+Write both requisition styles from memory — and know which call form each one permits afterwards.
+
+Pick floor thinking (//) vs ceiling thinking (math.ceil) from the question's wording: "boxes I can fill" vs "boxes I must order".
+
+Use random.randint and random.uniform to simulate shop data — your test bench when real measurements aren't handy.
+
+Diagnose a NameError in one glance and name the missing import.
+
+GA
+
+Try It · The Requisition Desk
+
+6 jobs · pick the slip that works
+
+Six jobs arrive at the crib window. For each, three requisition slips have been filled out — only one actually gets the tool working on your bench. Tap the good slip. The wrong ones tell you exactly which traceback they'd earn.
+
+
+
+Press START for the first job.
+
+JOB 0/6
+
+GOOD SLIPS 0
+
+BOUNCED 0
+
+START ▸
+
+Job 4 is the one that separates those who understood from those who memorised.
+
+Then to Colab (OP 40): requisition random, draw ten diameters with random.uniform(24.90, 25.10), and sort each by hand into ACCEPT / REWORK / SCRAP. Next week's lab automates what your eyes did today.
+
+DX
+
+Roll On · Job 11 in One Hour
+
+D-255 · date-time & arrays
+
+
+
+Walk to D-255. Job 11 draws two more boxes from the crib — datetime for clocking cycle times and arrays for holding them. Full day's homework dispatches there.
+
+
+
+Carry the crib story — every module for the rest of the course arrives through the same window.
+
+Ticks are for your own tracking only — they reset on reload and are not submitted anywhere.
+
+RM
+
+Raw Material · Links
+
+For OP 40
+
+Google Colab · simulated bench
+
+Python docs · the math crib
+
+NPTEL · Week 4
+
+← Job 09 · Go / No-Go in Code
+
+Job 11 · Cycle-Time Data →
+
+CS-1202 · Job Card 10 · PE section
+
+Lt. Birendra Kumar Barik · VSSUT Burla
+
+Rev A (give me notes for digital notes
+
+Here are comprehensive, structured digital notes based on Job Card 10: The Tool Crib (Module II).
+
+🛠️ Module II — Job Card 10: The Tool Crib & Requisition Styles
+Analogy: Python’s built-in tools are limited, but thousands of ready-made tools live in Modules (the Tool Crib). An import statement is your Requisition Slip to bring a tool to your workbench.
+
+📋 1. The Three Requisition Styles
+Style	Syntax	Usage	Pros / Cons
+1. Whole Toolbox	import math	
+math.sqrt(50)
+
+
+math.pi
+
+Clear & Safe: Never causes naming conflicts, but requires the module. prefix everywhere.
+2. Specific Tool	from math import sqrt	sqrt(50)	Direct & Concise: Call it bare (sqrt()). However, math.sqrt won't work anymore.
+3. Crib Query	
+dir(math)
+
+
+help(math.sqrt)
+
+—	Inspection Tools: dir() lists all available tools in the box; help() opens the manual.
+📦 2. Floor vs. Ceiling Thinking (Shop Operations)
+When packing or splitting batches in manufacturing, integer division and standard rounding aren't always enough:
+
+Floor Thinking (// or math.floor): "How many full units can I complete?"
+
+Example: 137÷12=11 full boxes you can completely fill (137 // 12 = 11).
+
+Ceiling Thinking (math.ceil): "How many containers/boxes must I order to hold everything?"
+
+Example: To hold 137 parts when each box holds 12, you need 12 boxes (math.ceil(137 / 12) = 12).
+
+Python
+import math
+
+parts = 137
+capacity = 12
+
+full_boxes = parts // capacity       # Output: 11  (Boxes completely filled)
+boxes_needed = math.ceil(parts / 12) # Output: 12  (Boxes required to ship all parts)
+🎲 3. Simulating Bench Measurements (random Module)
+When physical inspection data isn't handy, use the random module to simulate shop measurements on your bench:
+
+Discrete values (e.g., dice roll, integer counters):
+
+Python
+import random
+defect_type = random.randint(1, 6)  # Random integer between 1 and 6 (inclusive)
+Continuous values (e.g., digital caliper/micrometer readings):
+
+Python
+import random
+diameter = random.uniform(24.90, 25.10)  # Random float between 24.90 and 25.10
+🚨 4. Traceback Species #3: NameError
+A NameError occurs when you reach for a tool that was never signed out from the crib (missing or misplaced import).
+
+Python
+# ERROR EXAMPLE:
+sqrt(50)
+# Output: NameError: name 'sqrt' is not defined
+🔬 Quick Summary of the 3 Traceback Species Met So Far:
+TypeError: Wrong materials welded together (e.g., adding str + int).
+
+ValueError: Right material type, but hopeless input (e.g., int("hydraulic")).
+
+NameError: Unsigned tool/variable used before import or declaration.
+
+🧪 OP 40 Lab Simulation Code (Colab Quick-Ref)
+Simulate 10 diameter readings and categorize them against shop tolerances:
+
+Python
+import random
+
+# Tolerances: Target = 25.00 mm
+# ACCEPT: 24.95 to 25.05 mm
+# REWORK / SCRAP: Out of nominal tolerance
+
+for i in range(1, 11):
+    reading = random.uniform(24.90, 25.10)
+    
+    if 24.95 <= reading <= 25.05:
+        status = "ACCEPT"
+    elif reading < 24.95:
+        status = "SCRAP (Undersized)"
+    else:
+        status = "REWORK (Oversized)"
+        
+    print(f"Sample #{i:02d}: {reading:.3f} mm -> {status}")
