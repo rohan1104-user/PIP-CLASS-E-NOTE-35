@@ -1,1 +1,513 @@
 
+Module V: Scanning Inspection Reports — Regular Expressions
+1. Introduction to Regular Expressions
+A Regular Expression (Regex) is a pattern used to search, identify, and validate text.
+
+It works like a profile gauge in manufacturing.
+
+A profile gauge checks whether a physical part matches a required shape. Similarly, a regular expression checks whether a piece of text matches a required pattern or shape.
+
+For example, a part code may need to follow this format:
+
+PE-0137
+
+
+A regex can check whether the text follows this exact pattern.
+
+
+2. Why Regex is Useful
+A simple .split() parser works well when the input format is always predictable.
+
+For example:
+
+PE-0137;25.02;ACCEPT
+
+
+But real-world log files may contain:
+
+Extra spaces
+
+
+Different separators
+
+
+Missing fields
+
+
+Unwanted text
+
+
+Different formats
+
+
+Regex is useful when the input becomes messy or inconsistent.
+
+What I learned
+split() works when the format is fixed, while regex is more flexible when the format changes or becomes messy.
+
+
+3. Python's re Module
+Python provides the re module for working with regular expressions.
+
+First, we import it:
+
+import re
+
+
+After importing re, we can use functions such as:
+
+re.fullmatch()
+
+re.findall()
+
+re.split()
+
+re.sub()
+
+
+These functions allow us to validate, search, split, and clean text using patterns.
+
+
+4. The \d Token
+\d represents one digit from 0 to 9.
+
+Example:
+
+r"\d"
+
+
+matches:
+
+0
+
+1
+
+2
+
+...
+
+9
+
+
+Two \d tokens:
+
+r"\d\d"
+
+
+can match:
+
+42
+
+17
+
+08
+
+
+Example
+re.fullmatch(r"\d\d", "42")
+
+
+The text matches the pattern because it contains exactly two digits.
+
+
+5. The [A-Z] Token
+[A-Z] matches one capital letter from A to Z.
+
+Example:
+
+r"[A-Z]\d"
+
+
+can match:
+
+L1
+
+A5
+
+P7
+
+
+Here:
+
+[A-Z] → one capital letter
+
+
+\d → one digit
+
+
+So the pattern describes:
+
+Capital letter + digit
+
+
+6. The {4} Token
+{4} means that the previous pattern must occur exactly four times.
+
+Example:
+
+r"\d{4}"
+
+
+matches:
+
+0137
+
+2026
+
+4500
+
+
+But it does not represent a five-digit number such as:
+
+12345
+
+
+Part Code Example
+r"PE-\d{4}"
+
+
+matches:
+
+PE-0137
+
+PE-2045
+
+PE-9999
+
+
+
+7. The + Token
++ means one or more occurrences of the previous pattern.
+
+Example:
+
+r"\d+"
+
+
+can match:
+
+7
+
+42
+
+1240
+
+99999
+
+
+It matches one or more digits.
+
+Difference
+\d
+
+
+→ exactly one digit
+
+\d+
+
+
+→ one or more digits
+
+\d{4}
+
+
+→ exactly four digits
+
+
+8. Anchors ^ and $
+^ and $ are called anchors.
+
+^ → beginning of the string
+
+
+$ → end of the string
+
+
+They are important when we want to check whether the whole string follows a pattern.
+
+For example:
+
+r"^PE-\d{4}$"
+
+
+means:
+
+Start → PE- → exactly 4 digits → End
+
+
+This prevents extra characters from being accepted before or after the part code.
+
+
+9. Why Anchors Matter
+Consider:
+
+r"PE-\d{4}"
+
+
+This pattern may find a part-code-shaped section inside:
+
+XPE-0137Z
+
+
+But if we use:
+
+r"^PE-\d{4}$"
+
+
+the entire string must be exactly:
+
+PE-0137
+
+
+Important Difference
+Without anchors:
+
+"Does this text contain something shaped like a part code?"
+
+With anchors:
+
+"Is this entire text a valid part code?"
+
+This distinction is extremely important in validation.
+
+
+10. The \. Token
+A dot . has a special meaning in regex. It can represent any character.
+
+If we want to match an actual full stop/decimal point, we need to escape it:
+
+r"\."
+
+
+Example:
+
+r"\d+\.\d+"
+
+
+matches decimal numbers such as:
+
+25.02
+
+10.5
+
+124.75
+
+
+Here:
+
+\d+ → one or more digits
+
+
+\. → actual decimal point
+
+
+\d+ → one or more digits
+
+
+
+11. Raw Strings r""
+When writing regex patterns in Python, we normally use a raw string.
+
+Example:
+
+r"\d{4}"
+
+
+The r tells Python to treat the backslashes as raw characters and pass them directly to the regex engine.
+
+Important Rule
+Prefer:
+
+r"\d+"
+
+
+instead of:
+
+"\d+"
+
+
+What I learned
+The r before the quotes is an important part of writing regex patterns in Python.
+
+
+12. Important Regex Functions
+Python's re module provides several useful functions.
+
+Function
+
+Purpose
+
+re.fullmatch()
+
+Checks whether the entire string matches
+
+re.findall()
+
+Finds all occurrences matching a pattern
+
+re.split()
+
+Splits text using a regex pattern
+
+re.sub()
+
+Replaces matching text
+
+Example
+re.fullmatch(r"PE-\d{4}", "PE-0137")
+
+
+This checks whether the complete string is a valid part code.
+
+
+13. re.findall()
+re.findall() finds all matching pieces inside a string.
+
+Example:
+
+line = "Batch A: 25.02, Batch B: 26.40"
+
+
+numbers = re.findall(r"\d+\.\d+", line)
+
+
+print(numbers)
+
+
+Output:
+
+['25.02', '26.40']
+
+
+What I learned
+findall() is useful when we want to extract specific information from a messy log line.
+
+
+14. re.split() and re.sub()
+re.split()
+It can split text using a pattern.
+
+Example:
+
+line = "PE-0137 ; 25.02 ; ACCEPT"
+
+
+fields = re.split(r"\s*;\s*", line)
+
+
+print(fields)
+
+
+Output:
+
+['PE-0137', '25.02', 'ACCEPT']
+
+
+The pattern handles spaces around the semicolon.
+
+re.sub()
+re.sub() replaces matching text.
+
+Example:
+
+line = "PE-0137    25.02    ACCEPT"
+
+
+clean = re.sub(r"\s+", " ", line)
+
+
+print(clean)
+
+
+Output:
+
+PE-0137 25.02 ACCEPT
+
+
+It converts multiple spaces into a single space.
+
+
+15. What We Learned + Main Idea
+From this topic, I learned:
+
+Regular expressions are patterns used to inspect and process text.
+
+
+Regex works like a profile gauge for text.
+
+
+\d matches a digit.
+
+
+[A-Z] matches one capital letter.
+
+
+{4} means exactly four repetitions.
+
+
++ means one or more repetitions.
+
+
+^ represents the beginning of a string.
+
+
+$ represents the end of a string.
+
+
+\. matches a literal decimal point.
+
+
+Raw strings such as r"\d+" should be used for regex patterns.
+
+
+re.fullmatch() checks the complete string.
+
+
+re.findall() extracts all matching values.
+
+
+re.split() splits text using a regex pattern.
+
+
+re.sub() replaces matching text and can be used for cleaning.
+
+
+Anchors are important when we want to validate the whole string, not just find a matching piece inside it.
+
+
+Main Idea
+Messy Text
+
+    ↓
+
+Regular Expression Pattern
+
+    ↓
+
+Match / Extract / Split / Clean
+
+    ↓
+
+Useful Structured Data
+
+
+For example:
+
+import re
+
+
+code = "PE-0137"
+
+
+if re.fullmatch(r"PE-\d{4}", code):
+
+    print("Valid part code")
+
+else:
+
+    print("Invalid part code")
+
+
+The main lesson is:
+
+split() works when the format holds. Regex helps when the real-world format does not.
