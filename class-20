@@ -1,1 +1,246 @@
 
+Module IV: Encapsulation & Abstraction
+1. Encapsulation
+Encapsulation is the process of protecting the internal data of an object and controlling how it is accessed or modified.
+
+For example, in a Lathe machine, we should not allow anyone to directly change the RPM to an unsafe value such as 99999.
+
+Instead, the class should provide a method that checks the value before changing it.
+
+2. Problem Without Encapsulation
+class Lathe:
+
+    def __init__(self):
+
+        self.rpm = 0
+
+        self.max_rpm = 2000
+
+
+Anyone can directly change the RPM:
+
+L1.rpm = 99999
+
+
+This bypasses the safety rule.
+
+Therefore, important internal data should be protected.
+
+3. Levels of Attributes in Python
+Python commonly uses three levels of attributes:
+
+Public Attribute
+
+A normal attribute is public.
+
+self.tag = tag
+
+
+It can be directly accessed and modified.
+
+L1.tag
+
+L1.tag = "L-02"
+
+
+Single Underscore _
+
+Example:
+
+self._max_rpm = max_rpm
+
+
+A single underscore indicates that the attribute is intended for internal use.
+
+It is only a convention. Python still allows direct access:
+
+L1._max_rpm
+
+
+It means:
+
+"This is internal; please do not access it directly."
+
+Double Underscore __
+
+Example:
+
+self.__rpm = 0
+
+
+A double underscore causes name mangling.
+
+Python changes the internal name approximately to:
+
+_Lathe__rpm
+
+
+Therefore:
+
+L1.__rpm
+
+
+does not normally access the actual attribute.
+
+The real attribute can technically still be accessed using:
+
+L1._Lathe__rpm
+
+
+So __ provides stronger protection against accidental access, but it is not completely private.
+
+4. Validating Method
+A method can be used to validate data before changing it.
+
+Example:
+
+def start(self, rpm):
+
+    if not 0 < rpm <= self._max_rpm:
+
+        return "REFUSED: outside rated range"
+
+
+    self.__rpm = rpm
+
+    return "running"
+
+
+If the RPM is within the rated range, it is accepted.
+
+If the RPM is outside the range, it is refused.
+
+This prevents invalid data from being stored.
+
+5. Getter / Status Method
+A getter is a method used to read or report internal data without directly exposing control over that data.
+
+Example:
+
+def status(self):
+
+    return {
+
+        "tag": self.tag,
+
+        "rpm": self.__rpm,
+
+        "parts": self.__parts
+
+    }
+
+
+The user can check the machine's status using:
+
+L1.status()
+
+
+but does not directly modify the private RPM.
+
+6. Abstraction
+Abstraction means hiding unnecessary implementation details and showing the user only what they need to operate the object.
+
+For example, a lathe operator only needs a simple control panel such as:
+
+L1.start(1200)
+
+L1.make_part()
+
+L1.stop()
+
+L1.status()
+
+
+The operator does not need to know about the internal details such as:
+
+Spindle control
+
+Coolant system
+
+Tool offsets
+
+Thermal compensation
+
+Chuck pressure
+
+Motor control
+
+The complicated internal working is hidden behind simple methods.
+
+7. Encapsulation vs Abstraction
+Encapsulation protects the internal data and controls how it is changed.
+
+Abstraction hides complicated implementation details and provides a simple interface to the user.
+
+A simple way to remember:
+
+Encapsulation = Protect the inside.
+Abstraction = Simplify the outside.
+
+8. Complete Example
+class Lathe:
+
+    def __init__(self, tag, max_rpm=2000):
+
+        self.tag = tag
+
+        self._max_rpm = max_rpm
+
+        self.__rpm = 0
+
+        self.__parts = 0
+
+
+    def start(self, rpm):
+
+        if not 0 < rpm <= self._max_rpm:
+
+            return "REFUSED: outside rated range"
+
+
+        self.__rpm = rpm
+
+        return "running"
+
+
+    def status(self):
+
+        return {
+
+            "tag": self.tag,
+
+            "rpm": self.__rpm,
+
+            "parts": self.__parts
+
+        }
+
+
+9. What We Learned
+From this topic, we learned:
+
+Encapsulation protects an object's internal data.
+
+Public attributes can be accessed directly.
+
+_ indicates that an attribute is intended for internal use.
+
+__ causes name mangling and makes accidental access more difficult.
+
+Data should be validated before it is changed.
+
+Methods can be used as a safe interface for changing data.
+
+Getter methods can report internal state without directly exposing control.
+
+Abstraction hides complicated implementation details.
+
+A good class provides a simple control panel/interface to the user.
+
+Encapsulation protects the inside, while abstraction simplifies the outside.
+
+10. Main Idea
+A well-designed Python class should not allow users to directly manipulate important internal data. Instead, it should provide controlled methods for operation and simple methods for viewing information.
+
+Just like a real machine has guards and a control panel, a Python class uses encapsulation and abstraction to protect its internal working and provide a simple interface to the user.
+
