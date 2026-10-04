@@ -1,1 +1,30 @@
+ Python Loops
+1. for Loop
+Used when the number of repetitions is known.
 
+for i in range(10):
+
+    print("Inspect Part", i+1)
+
+
+Example: Inspecting 10 parts in a production batch.
+
+
+2. while Loop
+Used when the number of repetitions is unknown.
+
+diameter = 0
+
+
+while diameter < 24.95:
+
+    diameter = float(input("Enter diameter: "))
+
+
+Example: Continue measuring until the part is acceptable.
+
+
+⛔ break Statement
+Stops the loop immediately.
+
+for i
