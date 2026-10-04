@@ -1,1 +1,483 @@
 
+Poka-Yoke for Programs
+1. Introduction
+Poka-Yoke ka meaning hai “mistake-proofing”, yani aise safeguards lagana jo program mein common mistakes ko prevent ya handle kar sakein.
+
+Real life mein examples:
+
+Fixture jo workpiece ko sirf ek hi direction mein fit hone deta hai.
+
+
+Connector jo ulta plug nahi ho sakta.
+
+
+Programming mein bhi hum Poka-Yoke ka use karke program ko unexpected input aur common errors se protect kar sakte hain.
+
+What I learned
+Maine seekha ki program mein errors aana normal hai, lekin un errors ko properly handle karna important hai. Error ko hide karna solution nahi hai; humein uska actual cause samajhna chahiye.
+
+
+2. Error Messages / Tracebacks
+Python mein jab program mein error aata hai, to Python ek error message/traceback deta hai.
+
+Error message ko insult nahi, balki inspection report ki tarah dekhna chahiye.
+
+Traceback se humein usually pata chalta hai:
+
+Error kis type ka hai
+
+
+Error kis line par hua
+
+
+Error ka possible reason kya hai
+
+
+Important Rule
+Traceback ki last line pehle padho, kyunki last line generally error ka species/type batati hai.
+
+Uske baad line number dekho aur identify karo ki problem exactly kahan hui.
+
+
+3. Types of Errors I Learned
+Error Type
+
+Meaning
+
+Example
+
+TypeError
+
+Incompatible data types ko ek operation mein use karna
+
+25 + "30"
+
+ValueError
+
+Data type sahi hai, lekin value invalid hai
+
+float("twentyfive")
+
+NameError
+
+Aisa variable/name use karna jo defined nahi hai
+
+print(total) when total doesn't exist
+
+KeyError
+
+Dictionary mein requested key exist nahi karti
+
+parts["P100"] when key is missing
+
+IndexError
+
+List/string ke unavailable index ko access karna
+
+items[10] when list is shorter
+
+AttributeError
+
+Object mein requested method/attribute exist nahi karta
+
+P.make_part() when method doesn't exist
+
+ZeroDivisionError
+
+Kisi number ko zero se divide karna
+
+10 / 0
+
+
+4. TypeError
+Meaning
+TypeError tab aata hai jab hum incompatible data types ke saath operation karne ki koshish karte hain.
+
+Example
+age = 25
+
+text = "30"
+
+
+print(age + text)
+
+
+Yahan integer aur string ko directly add nahi kar sakte.
+
+What I learned
+Maine seekha ki operation karne se pehle mujhe check karna chahiye ki dono values compatible data types ki hain ya nahi.
+
+
+5. ValueError
+Meaning
+ValueError tab aata hai jab data ka type acceptable ho, lekin uski actual value valid na ho.
+
+Example
+number = float("twentyfive")
+
+
+Python string ko float mein convert kar raha hai, lekin "twentyfive" valid numerical value nahi hai.
+
+What I learned
+Maine seekha ki correct data type hone ke baad bhi value invalid ho sakti hai.
+
+
+6. NameError
+Meaning
+NameError tab aata hai jab hum kisi aise variable ya name ko use karte hain jo Python ko pata hi nahi hai.
+
+Example
+print(total)
+
+
+Agar total pehle define nahi kiya gaya hai, to NameError aayega.
+
+What I learned
+Maine seekha ki variables ko use karne se pehle properly define karna zaroori hai.
+
+
+7. KeyError
+Meaning
+KeyError dictionaries ke saath commonly aata hai jab requested key dictionary mein available nahi hoti.
+
+Example
+parts = {
+
+    "P101": "Bolt",
+
+    "P102": "Nut"
+
+}
+
+
+print(parts["P105"])
+
+
+P105 dictionary mein nahi hai, isliye KeyError aayega.
+
+What I learned
+Maine seekha ki dictionary se data access karte waqt key ke available hone ka dhyan rakhna chahiye.
+
+
+8. IndexError
+Meaning
+IndexError tab aata hai jab hum list/string ke aise index ko access karte hain jo exist nahi karta.
+
+Example
+items = ["Bolt", "Nut", "Screw"]
+
+
+print(items[5])
+
+
+List mein index 5 exist nahi karta.
+
+What I learned
+Maine seekha ki list ya string access karte waqt valid index use karna chahiye.
+
+
+9. AttributeError
+Meaning
+AttributeError tab aata hai jab kisi object ke andar aisa method ya attribute access kiya jaye jo exist nahi karta.
+
+Example
+P.make_part()
+
+
+Agar object P ke paas make_part() method nahi hai, to AttributeError aayega.
+
+What I learned
+Maine seekha ki kisi object ke available methods aur attributes ko samajhna important hai.
+
+
+10. ZeroDivisionError
+Meaning
+Jab kisi number ko zero se divide karne ki koshish ki jaati hai, Python ZeroDivisionError deta hai.
+
+Example
+total = 10
+
+count = 0
+
+
+average = total / count
+
+
+Yahan division by zero ho raha hai.
+
+What I learned
+Maine seekha ki division karne se pehle denominator ko check karna chahiye.
+
+
+11. try / except
+Python mein errors ko handle karne ke liye hum try aur except ka use kar sakte hain.
+
+Basic Structure
+try:
+
+    # Code that may cause an error
+
+except SomeError:
+
+    # Code to handle that error
+
+
+Example
+try:
+
+    age = int(input("Enter your age: "))
+
+except ValueError:
+
+    print("Please enter a valid number.")
+
+
+Agar user "abc" enter karta hai, program directly crash hone ke bajay proper message show karega.
+
+
+12. Two Important Rules of try / except
+Rule 1: Keep the try block short
+try ke andar sirf wahi code rakhna chahiye jahan error expected hai.
+
+Bad approach:
+
+try:
+
+    # Bahut saara unrelated code
+
+    ...
+
+except:
+
+    ...
+
+
+Better approach:
+
+try:
+
+    age = int(input("Enter age: "))
+
+except ValueError:
+
+    print("Invalid age.")
+
+
+Why?
+Agar try block bahut bada hoga, to pata lagana difficult ho jayega ki actual error kahan hua.
+
+
+Rule 2: Name the exception you expect
+Specific exception ko catch karna better practice hai.
+
+Example:
+
+try:
+
+    number = int(input("Enter a number: "))
+
+except ValueError:
+
+    print("Invalid number.")
+
+
+Yahan hum specifically ValueError handle kar rahe hain.
+
+
+13. The Bare except: Trap
+Bare except: ka matlab hai ki almost koi bhi exception catch ho sakta hai.
+
+Example:
+
+try:
+
+    number = int(input("Enter number: "))
+
+except:
+
+    print("Something went wrong.")
+
+
+Iska problem ye hai ki agar program mein koi unexpected bug ya typo ho, to bare except us error ko bhi hide kar sakta hai.
+
+Why is this dangerous?
+Agar error hide ho gaya, to:
+
+Bug identify karna difficult ho sakta hai.
+
+
+Program wrong behaviour kar sakta hai.
+
+
+Important error message disappear ho sakta hai.
+
+
+Developer ko actual problem ka pata nahi chalega.
+
+
+Better approach
+try:
+
+    number = int(input("Enter number: "))
+
+except ValueError:
+
+    print("Please enter a valid number.")
+
+
+What I learned
+Maine seekha ki bare except: avoid karna chahiye jab tak uski genuinely zarurat na ho. Humein preferably wahi exception catch karna chahiye jise hum expect kar rahe hain.
+
+
+14. Poka-Yoke in Programming
+Programming mein Poka-Yoke ka main purpose hai:
+
+Common mistakes ko prevent ya safely handle karna.
+
+For example, agar user se number input lena hai:
+
+try:
+
+    quantity = int(input("Enter quantity: "))
+
+except ValueError:
+
+    print("Quantity must be a number.")
+
+
+Yeh program ko unexpected input se protect karta hai.
+
+Is tarah try/except ek guard ki tarah kaam karta hai.
+
+
+15. Error Handling ka Correct Approach
+Error handling karte waqt mujhe ye steps follow karne chahiye:
+
+Error message ko calmly read karo.
+
+
+Traceback ki last line dekho.
+
+
+Error ka type/species identify karo.
+
+
+Line number check karo.
+
+
+Error ka actual cause samjho.
+
+
+Sirf expected exception ko catch karo.
+
+
+try block ko short rakho.
+
+
+Error ko blindly hide mat karo.
+
+
+Input validation aur appropriate guards use karo.
+
+
+Program ko test karke dekho ki guard properly kaam kar raha hai.
+
+
+
+16. Practical Activity – Fit the Guards
+Activity mein mujhe apne crash log se ek real error lena tha aur us program ko mistake-proof karna tha.
+
+Example
+Problem:
+
+number = int(input("Enter a number: "))
+
+
+Agar user "hello" enter karega, ValueError aayega.
+
+Mistake-proof version:
+
+try:
+
+    number = int(input("Enter a number: "))
+
+except ValueError:
+
+    print("Please enter a valid number.")
+
+
+Learning
+Maine seekha ki real program ke error ko identify karke uske according specific guard lagana chahiye.
+
+
+17. Teach-Back / Hostile Input Testing
+Guard lagane ke baad program ko sirf normal input se test nahi karna chahiye.
+
+Humein hostile/unexpected input bhi dena chahiye.
+
+Example:
+
+Agar program number expect karta hai:
+
+25
+
+
+ke saath-saath test karna chahiye:
+
+hello
+
+twenty
+
+25.5
+
+blank input
+
+
+What I learned
+Maine seekha ki ek guard tabhi reliable hai jab hum usse different unexpected inputs ke saath test karein.
+
+Agar test ke dauran koi naya error milta hai, to humein uske liye appropriate guard add karna chahiye.
+
+
+18. Key Takeaways
+Aaj ke topic se maine ye important concepts seekhe:
+
+Poka-Yoke means mistake-proofing.
+
+
+Programming mein errors ko properly handle karna important hai.
+
+
+Error messages ko inspection report ki tarah read karna chahiye.
+
+
+Traceback ki last line pehle read karni chahiye.
+
+
+Python mein different errors ke different meanings hote hain.
+
+
+try/except errors ko safely handle karne mein help karta hai.
+
+
+try block ko short rakhna chahiye.
+
+
+Expected exception ko specifically name karna chahiye.
+
+
+Bare except: errors ko hide kar sakta hai, isliye iska careless use nahi karna chahiye.
+
+
+Guards ko unexpected/hostile inputs ke saath test karna chahiye.
+
+
+Error ko hide karna aur error ko properly handle karna same thing nahi hai.
+
+
+Good programmers errors se panic nahi karte; woh traceback ko read karke problem identify karte hain.
+
+
+Final Learning
+I learned that a good program is not just a program that works with correct input. A good program should also be prepared for incorrect or unexpected input. Poka-Yoke helps us build these safety guards, while proper exception handling helps us understand and manage errors without hiding real problems.
+
