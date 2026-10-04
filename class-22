@@ -1,1 +1,525 @@
 
+Module IV: Inheritance
+1. What is Inheritance?
+Inheritance is a feature of Python that allows one class to acquire the properties and methods of another class.
+
+It helps us reuse existing code instead of writing the same code again.
+
+For example, a factory may have many machines:
+
+Lathe
+
+Press
+
+Drill
+
+Grinder
+
+All machines may have common features such as:
+
+Machine tag
+
+Running state
+
+Working hours
+
+Start operation
+
+Stop operation
+
+Status
+
+Instead of writing these features separately for every machine, we can create one common Machine class and make other classes inherit from it.
+
+
+2. Base Class / Parent Class
+The class that provides common properties and methods is called the base class or parent class.
+
+Example:
+
+class Machine:
+
+    def __init__(self, tag):
+
+        self.tag = tag
+
+        self.running = False
+
+        self.hours = 0
+
+
+    def start(self):
+
+        self.running = True
+
+        return f"{self.tag} started"
+
+
+    def stop(self):
+
+        self.running = False
+
+        return f"{self.tag} stopped"
+
+
+    def status(self):
+
+        return f"{self.tag}: running={self.running}"
+
+
+Here, Machine is the parent/base class.
+
+It contains the common features of machines.
+
+
+3. Child Class / Derived Class
+A class that inherits from another class is called a child class or derived class.
+
+Example:
+
+class Lathe(Machine):
+
+    pass
+
+
+Here:
+
+Machine → Parent class
+
+Lathe → Child class
+
+The Lathe automatically gets the methods and attributes of Machine.
+
+For example:
+
+L1 = Lathe("L-01")
+
+
+L1.start()
+
+L1.stop()
+
+L1.status()
+
+
+The Lathe does not need to rewrite these methods.
+
+
+4. The IS-A Test
+A useful rule for deciding whether inheritance is appropriate is the IS-A test.
+
+Ask:
+
+"Is the child actually a type of the parent?"
+
+For example:
+
+A Lathe IS A Machine.
+
+A Press IS A Machine.
+
+A Drill IS A Machine.
+
+
+Therefore:
+
+class Lathe(Machine):
+
+
+is correct.
+
+But:
+
+A Lathe IS A Chuck
+
+
+is not correct.
+
+A lathe has a chuck.
+
+Therefore, the chuck should normally be represented as an attribute, not through inheritance.
+
+Remember:
+IS-A → Inheritance
+HAS-A → Attribute / Composition
+
+
+5. super().__init__()
+When a child class has its own __init__(), it can call the parent's __init__() using:
+
+super().__init__()
+
+
+Example:
+
+class Lathe(Machine):
+
+    def __init__(self, tag, max_rpm=2000):
+
+        super().__init__(tag)
+
+        self.max_rpm = max_rpm
+
+        self.parts = 0
+
+
+Here:
+
+super().__init__(tag)
+
+
+calls the Machine class's __init__().
+
+Therefore, the common machine attributes are created first:
+
+self.tag
+
+self.running
+
+self.hours
+
+
+Then the Lathe adds its own attributes:
+
+self.max_rpm
+
+self.parts
+
+
+
+6. Why Use super()?
+Without super().__init__(), the parent initialization may not happen.
+
+For example:
+
+class Lathe(Machine):
+
+    def __init__(self, tag):
+
+        self.max_rpm = 2000
+
+
+Now the Lathe may not have the attributes initialized by Machine, such as:
+
+self.tag
+
+self.running
+
+self.hours
+
+
+Therefore, when a child has its own __init__(), we normally call:
+
+super().__init__(tag)
+
+
+first.
+
+
+7. Adding Child-Specific Features
+A child class can have its own methods that the parent does not have.
+
+Example:
+
+class Lathe(Machine):
+
+    def __init__(self, tag, max_rpm=2000):
+
+        super().__init__(tag)
+
+        self.max_rpm = max_rpm
+
+        self.parts = 0
+
+
+    def make_part(self):
+
+        if not self.running:
+
+            return "REFUSED: not running"
+
+
+        self.parts += 1
+
+        return f"{self.tag} made part #{self.parts}"
+
+
+make_part() is specific to the Lathe.
+
+A Press may have a different operation:
+
+class Press(Machine):
+
+    def stroke(self):
+
+        return "Press performed a stroke"
+
+
+Both machines still inherit common functionality from Machine.
+
+
+8. Method Overriding
+A child class can provide its own version of a method that already exists in the parent class.
+
+This is called method overriding.
+
+Example:
+
+class Lathe(Machine):
+
+
+    def status(self):
+
+        return "Lathe status"
+
+
+The parent Machine already has:
+
+def status(self):
+
+    return f"{self.tag}: running={self.running}"
+
+
+But when we call:
+
+L1.status()
+
+
+Python uses the Lathe version because the child has overridden the method.
+
+
+9. Using super() Inside an Override
+We can also use the parent's method and extend it instead of completely replacing it.
+
+Example:
+
+def status(self):
+
+    return super().status() + f" | {self.parts} parts"
+
+
+First:
+
+super().status()
+
+
+gets the parent's status.
+
+Then the Lathe adds:
+
+| 5 parts
+
+
+So the result could be:
+
+L-01: running=True | 5 parts
+
+
+This is useful because we can reuse the parent's functionality and add extra functionality.
+
+
+10. Method Lookup
+When we call:
+
+L1.status()
+
+
+Python looks for status() in the class of the object.
+
+If Lathe has its own status(), Python uses it.
+
+If Lathe does not have one, Python looks in its parent:
+
+Lathe
+
+  ↓
+
+Machine
+
+
+So the basic lookup is:
+
+First look in the child's class, then look in the parent class.
+
+
+11. Complete Example
+class Machine:
+
+    def __init__(self, tag):
+
+        self.tag = tag
+
+        self.running = False
+
+        self.hours = 0
+
+
+    def start(self):
+
+        self.running = True
+
+        return f"{self.tag} started"
+
+
+    def stop(self):
+
+        self.running = False
+
+        return f"{self.tag} stopped"
+
+
+    def status(self):
+
+        return f"{self.tag}: running={self.running}"
+
+
+
+class Lathe(Machine):
+
+    def __init__(self, tag, max_rpm=2000):
+
+        super().__init__(tag)
+
+        self.max_rpm = max_rpm
+
+        self.parts = 0
+
+
+    def make_part(self):
+
+        if not self.running:
+
+            return "REFUSED: not running"
+
+
+        self.parts += 1
+
+        return f"{self.tag} made part #{self.parts}"
+
+
+    def status(self):
+
+        return super().status() + f" | {self.parts} parts"
+
+
+
+L1 = Lathe("L-01")
+
+
+print(L1.start())
+
+print(L1.make_part())
+
+print(L1.status())
+
+
+Possible output:
+
+L-01 started
+
+L-01 made part #1
+
+L-01: running=True | 1 parts
+
+
+
+12. Advantages of Inheritance
+Inheritance provides:
+
+Code reuse — common code is written once.
+
+Less duplication — we don't repeat the same methods in every class.
+
+Easy maintenance — changes to common functionality can be made in the parent.
+
+Specialization — child classes can add their own features.
+
+Overriding — child classes can customize inherited methods.
+
+Better organization — related classes can be grouped into a logical hierarchy.
+
+
+13. Important Terms
+Term
+
+Meaning
+
+Parent/Base class
+
+Class whose features are inherited
+
+Child/Derived class
+
+Class that inherits from another class
+
+Inheritance
+
+Reusing properties and methods from a parent
+
+super()
+
+Used to access parent-class functionality
+
+Method overriding
+
+Child provides its own version of a parent method
+
+IS-A
+
+Relationship used to identify inheritance
+
+
+14. What We Learned
+From this topic, we learned:
+
+Inheritance allows one class to reuse another class's code.
+
+The parent class contains common features.
+
+The child class inherits those features and can add its own features.
+
+We should use the IS-A test before using inheritance.
+
+super().__init__() calls the parent class's constructor.
+
+A child class can add its own attributes and methods.
+
+A child class can override a parent method.
+
+super() can be used inside an overridden method to reuse the parent's implementation.
+
+Python looks for a method in the child class first and then in the parent class.
+
+Inheritance reduces code duplication and improves code organization.
+
+15. Easy Way to Remember
+Parent = common features
+Child = common features + special features
+super() = use the parent's functionality
+Override = replace/customize the parent's method
+IS-A = inheritance relationship
+
+Example:
+
+Machine
+
+   |
+
+   ├── Lathe
+
+   |
+
+   ├── Press
+
+   |
+
+   ├── Drill
+
+   |
+
+   └── Grinder
+
+The common machine features are written once in Machine, while each child class adds only what makes it different.
+
+
+The common machine features are written once in Machine, while each child class adds only what makes it different.
